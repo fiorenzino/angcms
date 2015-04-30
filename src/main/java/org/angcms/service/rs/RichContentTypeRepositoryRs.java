@@ -1,18 +1,25 @@
 package org.angcms.service.rs;
 
-import org.angcms.model.richcontent.type.RichContentType;
-import org.angcms.repository.richcontent.RichContentTypeRepository;
-import org.giavacms.api.management.AppConstants;
-import org.giavacms.api.service.RsRepositoryService;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
 
-@Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_PATH)
+import org.angcms.model.richcontent.type.RichContentType;
+import org.angcms.repository.richcontent.RichContentTypeRepository;
+import org.giavacms.api.management.AppConstants;
+import org.giavacms.api.repository.Search;
+import org.giavacms.api.service.RsRepositoryService;
+
+@Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_TYPE_PATH)
 @Stateless
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
@@ -22,22 +29,40 @@ public class RichContentTypeRepositoryRs extends RsRepositoryService<RichContent
    private static final long serialVersionUID = 1L;
 
    @Inject
-   RichContentTypeRepository richContentTypeRepository;
-
-   public RichContentTypeRepositoryRs()
-   {
-   }
-
-   @Inject
    public RichContentTypeRepositoryRs(RichContentTypeRepository richContentTypeRepository)
    {
       super(richContentTypeRepository);
    }
 
-   @Override
-   protected void prePersist(RichContentType richContentType) throws Exception
+   @GET
+   @Path("/types")
+   public Response getTipiRichContent()
    {
-
+      try
+      {
+         Search<RichContentType> srct = new Search<RichContentType>(RichContentType.class);
+         List<RichContentType> lrct = getRepository().getList(srct, 0, 0);
+         if (lrct == null || lrct.size() == 0)
+         {
+            return Response.status(Status.NO_CONTENT).build();
+         }
+         List<String> names = new ArrayList<String>();
+         for (RichContentType rct : lrct)
+         {
+            names.add(rct.getName());
+         }
+         return Response.status(Status.OK).entity(names)
+                  .header("Access-Control-Expose-Headers", "startRow, pageSize, listSize, startRow")
+                  .header("startRow", 0)
+                  .header("pageSize", names.size())
+                  .header("listSize", names.size())
+                  .build();
+      }
+      catch (Exception e)
+      {
+         logger.error(e.getMessage(), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+      }
    }
 
 }

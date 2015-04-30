@@ -1,19 +1,25 @@
 package org.angcms.service.rs;
 
-import org.angcms.model.richcontent.RichContent;
-import org.angcms.model.richcontent.type.RichContentType;
-import org.angcms.repository.richcontent.RichContentRepository;
-import org.angcms.repository.richcontent.RichContentTypeRepository;
-import org.giavacms.api.management.AppConstants;
-import org.giavacms.api.repository.Search;
-import org.giavacms.api.service.RsRepositoryService;
+import java.util.List;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
-import javax.ws.rs.*;
+import javax.persistence.NoResultException;
+import javax.ws.rs.Consumes;
+import javax.ws.rs.GET;
+import javax.ws.rs.Path;
+import javax.ws.rs.PathParam;
+import javax.ws.rs.Produces;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
-import java.util.ArrayList;
-import java.util.List;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+
+import org.angcms.model.base.attachment.Image;
+import org.angcms.model.richcontent.RichContent;
+import org.angcms.repository.richcontent.RichContentRepository;
+import org.giavacms.api.management.AppConstants;
+import org.giavacms.api.service.RsRepositoryService;
 
 @Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_PATH)
 @Stateless
@@ -27,60 +33,109 @@ public class RichContentServiceRs extends RsRepositoryService<RichContent>
    @Inject
    RichContentRepository richContentRepository;
 
-   @Inject
-   RichContentTypeRepository richContentTypeRepository;
-
-   @GET
-   @Path("/types")
-   public List<String> getTipiRichContent()
-   {
-      try
-      {
-         Search<RichContentType> r = new Search<RichContentType>(RichContentType.class);
-         List<RichContentType> rntl = richContentTypeRepository.getList(r, 0, 0);
-         List<String> l = new ArrayList<String>();
-         for (RichContentType rnt : rntl)
-         {
-            l.add(rnt.getName());
-         }
-         return l;
-      }
-      catch (Exception e)
-      {
-
-      }
-      return null;
-   }
-
    @GET
    @Path("/last")
-   public RichContent getLast(@QueryParam("category") String category)
+   public Response getLast(@QueryParam("category") String category)
    {
       try
       {
          RichContent lastContent = richContentRepository.getLast(category);
-         return lastContent;
+         if (lastContent != null)
+         {
+            return Response.status(Status.OK).entity(lastContent)
+                     .build();
+         }
+         else
+         {
+            return Response.status(Status.NO_CONTENT).build();
+         }
+      }
+      catch (NoResultException e)
+      {
+         return Response.status(Status.NO_CONTENT).build();
       }
       catch (Exception e)
       {
-
+         return Response.status(Status.INTERNAL_SERVER_ERROR)
+                  .build();
       }
-      return null;
    }
 
    @GET
    @Path("/highlight")
-   public RichContent getHighlight(@QueryParam("category") String category)
+   public Response getHighlight(@QueryParam("category") String category)
    {
       try
       {
          RichContent highlightContent = richContentRepository.getHighlight(category);
-         return highlightContent;
+         if (highlightContent != null)
+         {
+            return Response.status(Status.OK).entity(highlightContent)
+                     .build();
+         }
+         else
+         {
+            return Response.status(Status.NO_CONTENT).build();
+         }
+      }
+      catch (NoResultException e)
+      {
+         return Response.status(Status.NO_CONTENT).build();
       }
       catch (Exception e)
       {
-
+         return Response.status(Status.INTERNAL_SERVER_ERROR)
+                  .build();
       }
-      return null;
+   }
+
+   @GET
+   @Path("/{richContentId}/images")
+   public Response getImages(@PathParam("richContentId") String richContentId)
+   {
+      try
+      {
+         List<Image> list = richContentRepository.getImages(richContentId);
+         if (list == null || list.size() == 0)
+         {
+            return Response.status(Status.NO_CONTENT).build();
+         }
+         return Response.status(Status.OK).entity(list)
+                  .header("Access-Control-Expose-Headers", "startRow, pageSize, listSize, startRow")
+                  .header("startRow", 0)
+                  .header("pageSize", list.size())
+                  .header("listSize", list.size())
+                  .build();
+      }
+      catch (Exception e)
+      {
+         logger.error(e.getMessage(), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+      }
+   }
+
+   @GET
+   @Path("/{richContentId}/documents")
+   public Response getDocument(@PathParam("richContentId") String richContentId)
+   {
+      try
+      {
+         List<Image> list = richContentRepository.getDocuments(richContentId);
+         if (list == null || list.size() == 0)
+         {
+            return Response.status(Status.NO_CONTENT).build();
+         }
+         return Response.status(Status.OK).entity(list)
+                  .header("Access-Control-Expose-Headers", "startRow, pageSize, listSize, startRow")
+                  .header("startRow", 0)
+                  .header("pageSize", list.size())
+                  .header("listSize", list.size())
+                  .build();
+      }
+      catch (Exception e)
+      {
+         logger.error(e.getMessage(), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR).build();
+      }
    }
 }
