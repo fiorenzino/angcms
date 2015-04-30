@@ -2,8 +2,11 @@ package org.angcms.model.catalogue;
 
 import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,12 +14,17 @@ import java.util.Map;
 
 @Entity
 @Table(name = Product.TABLE_NAME)
+@XmlRootElement
 public class Product implements Serializable
 {
 
    private static final long serialVersionUID = 1L;
-   public static final String EXTENSION = "Product";
    public static final String TABLE_NAME = "Product";
+   public static final String TABLE_FK = "Product_id";
+   public static final String DOCUMENTS_JOINTABLE_NAME = "Product_Document";
+   public static final String DOCUMENT_FK = "documents_id";
+   public static final String IMAGES_JOINTABLE_NAME = "Product_Image";
+   public static final String IMAGE_FK = "images_id";
    public static final boolean HAS_DETAILS = true;
 
    public Product()
@@ -89,8 +97,9 @@ public class Product implements Serializable
       this.category = category;
    }
 
+   @JsonIgnore
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   @JoinTable(name = "Product_Document", joinColumns = @JoinColumn(name = "Product_id"), inverseJoinColumns = @JoinColumn(name = "documents_id"))
+   @JoinTable(name = DOCUMENTS_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = DOCUMENT_FK))
    public List<Document> getDocuments()
    {
       if (this.documents == null)
@@ -109,12 +118,14 @@ public class Product implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public int getDocSize()
    {
       return getDocuments().size();
    }
 
    @Transient
+   @JsonIgnore
    public Image getImage()
    {
       if (getImages() != null && getImages().size() > 0)
@@ -122,8 +133,9 @@ public class Product implements Serializable
       return null;
    }
 
+   @JsonIgnore
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   @JoinTable(name = "Product_Image", joinColumns = @JoinColumn(name = "Product_id"), inverseJoinColumns = @JoinColumn(name = "images_id"))
+   @JoinTable(name = IMAGES_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = IMAGE_FK))
    public List<Image> getImages()
    {
       if (this.images == null)
