@@ -14,6 +14,10 @@ public class Banner implements Serializable
 
    private Long id;
    private String name;
+   private String language;
+
+
+
    private BannerTypology bannerTypology;
    private boolean active = true;
    private String url;
@@ -33,6 +37,16 @@ public class Banner implements Serializable
    public void setId(Long id)
    {
       this.id = id;
+   }
+
+   public String getLanguage()
+   {
+      return language;
+   }
+
+   public void setLanguage(String language)
+   {
+      this.language = language;
    }
 
    public String getName()

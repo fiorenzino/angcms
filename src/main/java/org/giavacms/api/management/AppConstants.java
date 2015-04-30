@@ -21,4 +21,6 @@ public class AppConstants
 
    public static final String PRODUCT_PATH = "/product";
 
+   public static final String LANGUAGE_PATH = "/language";
+
 }
