@@ -6,7 +6,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -56,6 +55,7 @@ public class Product implements Serializable
    private String val8;
    private String val9;
    private String val10;
+   private String language;
 
    private Map<String, String[]> vals = null;
 
@@ -70,6 +70,16 @@ public class Product implements Serializable
    public void setId(String id)
    {
       this.id = id;
+   }
+
+   public String getLanguage()
+   {
+      return language;
+   }
+
+   public void setLanguage(String language)
+   {
+      this.language = language;
    }
 
    @Lob
