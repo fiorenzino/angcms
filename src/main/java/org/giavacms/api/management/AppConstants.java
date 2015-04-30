@@ -17,4 +17,8 @@ public class AppConstants
 
    public static final String BANNER_PATH = "/banner";
 
+   public static final String CATEGORY_PATH = "/category";
+
+   public static final String PRODUCT_PATH = "/product";
+
 }
