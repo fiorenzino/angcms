@@ -270,16 +270,15 @@ public abstract class RsRepositoryService<T> implements Serializable
          Search<T> search = getSearch(ui, orderBy);
          int listSize = repository.getListSize(search);
          List<T> list = repository.getList(search, startRow, pageSize);
-         //            PaginatedListWrapper<T> wrapper = new PaginatedListWrapper<>();
-         //            wrapper.setList(list);
-         //            wrapper.setListSize(listSize);
-         //            wrapper.setStartRow(startRow);
+         // PaginatedListWrapper<T> wrapper = new PaginatedListWrapper<>();
+         // wrapper.setList(list);
+         // wrapper.setListSize(listSize);
+         // wrapper.setStartRow(startRow);
          return Response.status(Status.OK).entity(list)
-                  .header("Access-Control-Expose-Headers", "startRow, pageSize, listSize, startRow")
+                  .header("Access-Control-Expose-Headers", "startRow, pageSize, listSize")
                   .header("startRow", startRow)
                   .header("pageSize", pageSize)
                   .header("listSize", listSize)
-                  .header("startRow", startRow)
                   .build();
       }
       catch (Exception e)
@@ -405,6 +404,5 @@ public abstract class RsRepositoryService<T> implements Serializable
       logger.info("@OPTIONS ALL");
       return Response.ok().build();
    }
-
 
 }
