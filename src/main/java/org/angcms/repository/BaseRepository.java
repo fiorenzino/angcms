@@ -31,7 +31,7 @@ public abstract class BaseRepository<T> extends AbstractRepository<T>
       return "id desc";
    }
 
-   public String testKey(String key, String table)
+   public String makeUniqueKey(String key, String table)
    {
       String keyNotUsed = key;
       boolean found = false;
@@ -39,11 +39,11 @@ public abstract class BaseRepository<T> extends AbstractRepository<T>
       while (!found)
       {
          logger.info("key to search: " + keyNotUsed);
-         Long pageCount = (Long) getEm()
-                  .createQuery("select count(p.id) from " + table + " p where p.id = :KEY")
+         Object pageCount = getEm()
+                  .createNativeQuery("select count(p.id) from " + table + " p where p.id = :KEY")
                   .setParameter("KEY", keyNotUsed).getSingleResult();
          logger.info("found " + pageCount + " pages with id: " + keyNotUsed);
-         if (pageCount != null && pageCount > 0)
+         if (pageCount != null && Integer.parseInt(pageCount.toString()) > 0)
          {
             i++;
             keyNotUsed = key + "-" + i;

@@ -16,10 +16,13 @@ public class RichContent implements Serializable
 {
 
    private static final long serialVersionUID = 1L;
-   public static final String EXTENSION = "RichContent";
    public static final String TABLE_NAME = "RichContent";
+   public static final String TABLE_FK = "RichContent_id";
+   public static final String DOCUMENTS_JOINTABLE_NAME = "RichContent_Document";
+   public static final String DOCUMENT_FK = "documents_id";
+   public static final String IMAGES_JOINTABLE_NAME = "RichContent_Image";
+   public static final String IMAGE_FK = "images_id";
    private static final String TAG_SEPARATOR = ",";
-   public static final boolean HAS_DETAILS = true;
 
    private String id;
    private String title;
@@ -53,7 +56,7 @@ public class RichContent implements Serializable
    }
 
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   @JoinTable(name = "RichContent_Document", joinColumns = @JoinColumn(name = "RichContent_id"), inverseJoinColumns = @JoinColumn(name = "documents_id"))
+   @JoinTable(name = DOCUMENTS_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = DOCUMENT_FK))
    public List<Document> getDocuments()
    {
       if (this.documents == null)
@@ -78,7 +81,7 @@ public class RichContent implements Serializable
    }
 
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-   @JoinTable(name = "RichContent_Image", joinColumns = @JoinColumn(name = "RichContent_id"), inverseJoinColumns = @JoinColumn(name = "images_id"))
+   @JoinTable(name = IMAGES_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = IMAGE_FK))
    public List<Image> getImages()
    {
       if (this.images == null)
@@ -248,12 +251,6 @@ public class RichContent implements Serializable
          }
       }
       return tagList;
-   }
-
-   @Transient
-   public Image getFirstImage()
-   {
-      return images == null ? null : images.size() == 0 ? null : images.get(0);
    }
 
 }
