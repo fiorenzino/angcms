@@ -1,10 +1,13 @@
 package org.angcms.model.richcontent.type;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 
 @Entity
 @Table(name = RichContentType.TABLE_NAME)
+@XmlRootElement
 public class RichContentType implements Serializable
 {
 

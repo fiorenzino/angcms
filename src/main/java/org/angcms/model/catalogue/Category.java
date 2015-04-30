@@ -1,12 +1,17 @@
 package org.angcms.model.catalogue;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = Category.TABLE_NAME)
+@XmlRootElement
 public class Category implements Serializable
 {
 
@@ -72,6 +77,7 @@ public class Category implements Serializable
       this.name = name;
    }
 
+   @JsonIgnore
    @OneToMany(mappedBy = "category", fetch = FetchType.LAZY)
    @OrderBy("name")
    public List<Product> getProducts()

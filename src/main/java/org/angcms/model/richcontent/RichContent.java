@@ -3,8 +3,11 @@ package org.angcms.model.richcontent;
 import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.type.RichContentType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +15,7 @@ import java.util.List;
 
 @Entity
 @Table(name = RichContent.TABLE_NAME)
+@XmlRootElement
 public class RichContent implements Serializable
 {
 
@@ -55,6 +59,7 @@ public class RichContent implements Serializable
       this.id = id;
    }
 
+   @JsonIgnore
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinTable(name = DOCUMENTS_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = DOCUMENT_FK))
    public List<Document> getDocuments()
@@ -75,11 +80,13 @@ public class RichContent implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public int getDocSize()
    {
       return getDocuments().size();
    }
 
+   @JsonIgnore
    @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
    @JoinTable(name = IMAGES_JOINTABLE_NAME, joinColumns = @JoinColumn(name = TABLE_FK), inverseJoinColumns = @JoinColumn(name = IMAGE_FK))
    public List<Image> getImages()
@@ -90,6 +97,7 @@ public class RichContent implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public Image getImage()
    {
       if (getImages() != null && getImages().size() > 0)
@@ -108,6 +116,7 @@ public class RichContent implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public int getImgSize()
    {
       return getImages().size();
