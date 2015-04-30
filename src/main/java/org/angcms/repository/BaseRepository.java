@@ -31,4 +31,30 @@ public abstract class BaseRepository<T> extends AbstractRepository<T>
       return "id desc";
    }
 
+   public String testKey(String key, String table)
+   {
+      String keyNotUsed = key;
+      boolean found = false;
+      int i = 0;
+      while (!found)
+      {
+         logger.info("key to search: " + keyNotUsed);
+         Long pageCount = (Long) getEm()
+                  .createQuery("select count(p.id) from " + table + " p where p.id = :KEY")
+                  .setParameter("KEY", keyNotUsed).getSingleResult();
+         logger.info("found " + pageCount + " pages with id: " + keyNotUsed);
+         if (pageCount != null && pageCount > 0)
+         {
+            i++;
+            keyNotUsed = key + "-" + i;
+         }
+         else
+         {
+            found = true;
+            return keyNotUsed;
+         }
+      }
+      return "";
+   }
+
 }

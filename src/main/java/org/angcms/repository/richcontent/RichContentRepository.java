@@ -8,6 +8,7 @@ import org.angcms.repository.BaseRepository;
 import org.angcms.util.StringUtils;
 import org.angcms.util.TimeUtils;
 import org.giavacms.api.repository.Search;
+import org.giavacms.api.util.IdUtils;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -27,6 +28,9 @@ public class RichContentRepository extends BaseRepository<RichContent>
    @Override
    protected RichContent prePersist(RichContent n)
    {
+      String idTitle = IdUtils.createPageId(n.getTitle());
+      String idFinal = testKey(idTitle, RichContent.TABLE_NAME);
+      n.setId(idFinal);
       if (n.getDate() == null)
          n.setDate(new Date());
       if (n.getRichContentType() != null
