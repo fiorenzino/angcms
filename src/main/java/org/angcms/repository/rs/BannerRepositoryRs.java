@@ -1,4 +1,4 @@
-package org.angcms.service.rs;
+package org.angcms.repository.rs;
 
 import org.angcms.model.banner.Banner;
 import org.angcms.repository.banner.BannerRepository;

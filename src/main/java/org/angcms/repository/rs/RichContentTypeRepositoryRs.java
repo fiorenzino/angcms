@@ -1,4 +1,4 @@
-package org.angcms.service.rs;
+package org.angcms.repository.rs;
 
 import java.util.ArrayList;
 import java.util.List;

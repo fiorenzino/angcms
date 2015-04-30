@@ -1,4 +1,4 @@
-package org.angcms.service.rs;
+package org.angcms.repository.rs;
 
 import org.angcms.model.catalogue.Category;
 import org.angcms.repository.catalogue.CategoryRepository;

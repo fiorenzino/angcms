@@ -1,4 +1,4 @@
-package org.angcms.service.rs;
+package org.angcms.repository.rs;
 
 import org.angcms.model.richcontent.RichContent;
 import org.angcms.repository.richcontent.RichContentRepository;
