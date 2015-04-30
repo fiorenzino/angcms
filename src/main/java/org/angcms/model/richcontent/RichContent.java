@@ -7,7 +7,6 @@ import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
-
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -42,6 +41,7 @@ public class RichContent implements Serializable
    private List<String> tagList;
    private String tags;
    boolean active = true;
+   private String language;
 
    public RichContent()
    {
@@ -57,6 +57,16 @@ public class RichContent implements Serializable
    public void setId(String id)
    {
       this.id = id;
+   }
+
+   public String getLanguage()
+   {
+      return language;
+   }
+
+   public void setLanguage(String language)
+   {
+      this.language = language;
    }
 
    @JsonIgnore

@@ -1,10 +1,9 @@
 package org.angcms.model.catalogue;
 
-import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
-
 import org.codehaus.jackson.annotate.JsonIgnore;
 
+import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -53,6 +52,7 @@ public class Category implements Serializable
    private String ref8;
    private String ref9;
    private String ref10;
+   private String language;
 
    @Id
    public String getId()
@@ -63,6 +63,16 @@ public class Category implements Serializable
    public void setId(String id)
    {
       this.id = id;
+   }
+
+   public String getLanguage()
+   {
+      return language;
+   }
+
+   public void setLanguage(String language)
+   {
+      this.language = language;
    }
 
    @Transient

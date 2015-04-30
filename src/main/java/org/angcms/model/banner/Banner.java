@@ -15,9 +15,6 @@ public class Banner implements Serializable
    private Long id;
    private String name;
    private String language;
-
-
-
    private BannerTypology bannerTypology;
    private boolean active = true;
    private String url;
