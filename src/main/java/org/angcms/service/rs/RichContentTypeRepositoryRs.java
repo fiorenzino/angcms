@@ -12,7 +12,7 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path(AppConstants.RICHCONTENT_PATH)
+@Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_PATH)
 @Stateless
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)

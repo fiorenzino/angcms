@@ -24,6 +24,11 @@ public class RichContentType implements Serializable
       this.id = id;
    }
 
+   public RichContentType(String name)
+   {
+      this.name = name;
+   }
+
    @Id
    @GeneratedValue(strategy = GenerationType.IDENTITY)
    public Long getId()

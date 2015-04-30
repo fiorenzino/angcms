@@ -1,7 +1,7 @@
 package org.angcms.service.rs;
 
-import org.angcms.model.richcontent.Tag;
-import org.angcms.repository.richcontent.TagRepository;
+import org.angcms.model.banner.Banner;
+import org.angcms.repository.banner.BannerRepository;
 import org.giavacms.api.management.AppConstants;
 import org.giavacms.api.service.RsRepositoryService;
 
@@ -12,32 +12,26 @@ import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 
-@Path(AppConstants.BASE_PATH + AppConstants.TAG_PATH)
+@Path(AppConstants.BASE_PATH + AppConstants.BANNER_PATH)
 @Stateless
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public class TagRepositoryRs extends RsRepositoryService<Tag>
+public class BannerRepositoryRs extends RsRepositoryService<Banner>
 {
 
    private static final long serialVersionUID = 1L;
 
    @Inject
-   TagRepository tagRepository;
+   BannerRepository bannerRepository;
 
-   public TagRepositoryRs()
+   public BannerRepositoryRs()
    {
    }
 
    @Inject
-   public TagRepositoryRs(TagRepository tagRepository)
+   public BannerRepositoryRs(BannerRepository bannerRepository)
    {
-      super(tagRepository);
-   }
-
-   @Override
-   protected void prePersist(Tag tag) throws Exception
-   {
-
+      super(bannerRepository);
    }
 
 }
