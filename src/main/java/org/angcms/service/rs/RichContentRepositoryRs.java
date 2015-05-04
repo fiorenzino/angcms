@@ -176,7 +176,7 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
             fileName = FileUtils.getLastPartOf(HttpUtils.parseFileName(headers));
             // Handle the body of that part with an InputStream
             InputStream istream = inputPart.getBody(InputStream.class, null);
-            byte[] byteArray = IOUtils.toByteArray(istreaolm);
+            byte[] byteArray = IOUtils.toByteArray(istream);
             Document doc = new Document();
             doc.setData(byteArray);
             doc.setType(MimeUtils.getContentType(FileUtils.getLastPartOf(fileName)));
