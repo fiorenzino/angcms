@@ -29,4 +29,6 @@ public class AppConstants
 
    public static final String TEST_PATH = "/test";
 
+   public static final String IMG_FOLDER = "img";
+
 }

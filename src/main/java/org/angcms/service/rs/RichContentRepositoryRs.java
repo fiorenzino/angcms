@@ -130,14 +130,16 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
          {
             // Retrieve headers, read the Content-Disposition header to obtain the original name of the file
             MultivaluedMap<String, String> headers = inputPart.getHeaders();
-            fileName = HttpUtils.parseFileName(headers);
+            fileName = FileUtils.getLastPartOf(HttpUtils.parseFileName(headers));
             // Handle the body of that part with an InputStream
             InputStream istream = inputPart.getBody(InputStream.class, null);
             byte[] byteArray = IOUtils.toByteArray(istream);
             Image image = new Image();
-            image.setData(byteArray);
             image.setFilename(FileUtils.getLastPartOf(fileName));
             image.setType(ResourceUtils.getType(fileName));
+            fileName = ResourceUtils.createImage_(AppConstants.IMG_FOLDER, fileName, byteArray);
+            image.setFilename(fileName);
+            image.setData(byteArray);
             image = imageRepository.persist(image);
             if (image.getId() == null)
             {
