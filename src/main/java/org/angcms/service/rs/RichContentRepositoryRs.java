@@ -1,31 +1,13 @@
 package org.angcms.service.rs;
 
-import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.persistence.NoResultException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.QueryParam;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
+import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.RichContent;
+import org.angcms.repository.base.DocumentRepository;
 import org.angcms.repository.base.ImageRepository;
 import org.angcms.repository.richcontent.RichContentRepository;
 import org.angcms.repository.richcontent.TagRepository;
+import org.angcms.util.MimeUtils;
 import org.angcms.util.ResourceUtils;
 import org.apache.commons.io.IOUtils;
 import org.giavacms.api.management.AppConstants;
@@ -34,6 +16,20 @@ import org.giavacms.core.util.FileUtils;
 import org.giavacms.core.util.HttpUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.persistence.NoResultException;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 @Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_PATH)
 @Stateless
@@ -58,6 +54,9 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
    TagRepository tagRepository;
    @Inject
    ImageRepository imageRepository;
+
+   @Inject
+   DocumentRepository documentRepository;
 
    @GET
    @Path("/last")
@@ -156,6 +155,50 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
          logger.error(e.getMessage(), e);
          return Response.status(Status.INTERNAL_SERVER_ERROR)
                   .entity("Error creating image").build();
+      }
+   }
+
+   @POST
+   @Path("/{richContentId}/document")
+   @Consumes(MediaType.MULTIPART_FORM_DATA)
+   public Response addDocument(@PathParam("richContentId") String richContentId, MultipartFormDataInput input)
+            throws Exception
+   {
+      try
+      {
+         String fileName = "";
+         Map<String, List<InputPart>> formParts = input.getFormDataMap();
+         List<InputPart> inPart = formParts.get("file");
+         for (InputPart inputPart : inPart)
+         {
+            // Retrieve headers, read the Content-Disposition header to obtain the original name of the file
+            MultivaluedMap<String, String> headers = inputPart.getHeaders();
+            fileName = FileUtils.getLastPartOf(HttpUtils.parseFileName(headers));
+            // Handle the body of that part with an InputStream
+            InputStream istream = inputPart.getBody(InputStream.class, null);
+            byte[] byteArray = IOUtils.toByteArray(istream);
+            Document doc = new Document();
+            doc.setData(byteArray);
+            doc.setType(MimeUtils.getContentType(FileUtils.getLastPartOf(fileName)));
+            String filename = ResourceUtils.createFile_("docs", fileName, byteArray);
+            doc.setFilename(filename);
+            doc = documentRepository.persist(doc);
+
+            if (doc.getId() == null)
+            {
+               return Response.status(Status.INTERNAL_SERVER_ERROR)
+                        .entity("Error writing file: " + fileName).build();
+            }
+            ((RichContentRepository) getRepository()).addDocument(richContentId, doc.getId());
+         }
+         String output = "File saved to server location : " + fileName;
+         return Response.status(200).entity(output).build();
+      }
+      catch (Exception e)
+      {
+         logger.error(e.getMessage(), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR)
+                  .entity("Error creating doc").build();
       }
    }
 

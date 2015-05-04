@@ -31,4 +31,6 @@ public class AppConstants
 
    public static final String IMG_FOLDER = "img";
 
+   public static final String DOC_FOLDER = "doc";
+
 }
