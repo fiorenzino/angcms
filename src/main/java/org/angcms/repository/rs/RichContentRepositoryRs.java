@@ -30,6 +30,10 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
 
    private static final long serialVersionUID = 1L;
 
+   public RichContentRepositoryRs()
+   {
+   }
+
    @Inject
    public RichContentRepositoryRs(RichContentRepository repository)
    {

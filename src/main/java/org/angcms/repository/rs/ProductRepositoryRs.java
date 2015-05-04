@@ -28,6 +28,10 @@ public class ProductRepositoryRs extends RsRepositoryService<Product>
 
    private static final long serialVersionUID = 1L;
 
+   public ProductRepositoryRs()
+   {
+   }
+
    @Inject
    public ProductRepositoryRs(ProductRepository productRepository)
    {

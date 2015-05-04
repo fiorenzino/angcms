@@ -4,11 +4,12 @@ import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "BannerTypology")
+@Table(name = BannerTypology.TABLE_NAME)
 public class BannerTypology implements Serializable
 {
 
    private static final long serialVersionUID = 1L;
+   public static final String TABLE_NAME = "BannerTypology";
 
    private Long id;
    private String name;
@@ -61,13 +62,6 @@ public class BannerTypology implements Serializable
       this.active = active;
    }
 
-   @Override
-   public String toString()
-   {
-      return "BannerTypology [id=" + id + ", name=" + name + ", description="
-               + description + ", active=" + active + "]";
-   }
-
    public String getType()
    {
       return type;
@@ -88,4 +82,15 @@ public class BannerTypology implements Serializable
       this.language = language;
    }
 
+   @Override public String toString()
+   {
+      return "BannerTypology{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", description='" + description + '\'' +
+               ", type='" + type + '\'' +
+               ", active=" + active +
+               ", language='" + language + '\'' +
+               '}';
+   }
 }

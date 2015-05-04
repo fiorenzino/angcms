@@ -197,16 +197,6 @@ public class RichContent implements Serializable
       this.date = date;
    }
 
-   @Override
-   public String toString()
-   {
-      return "RichContent [id=" + getId() + ", active="
-               + isActive() + ", title=" + getTitle()
-               + ", preview=" + preview + ", content=" + content + ", author="
-               + author + ", date=" + date + ", tags=" + tags + ", richContentType="
-               + richContentType.getName() + ", highlight=" + highlight + "]";
-   }
-
    public String getTags()
    {
       return tags;
@@ -239,6 +229,7 @@ public class RichContent implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public String getTag()
    {
       return tag;
@@ -250,6 +241,7 @@ public class RichContent implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public List<String> getTagList()
    {
       if (tagList != null)
@@ -272,4 +264,24 @@ public class RichContent implements Serializable
       return tagList;
    }
 
+   @Override public String toString()
+   {
+      return "RichContent{" +
+               "id='" + id + '\'' +
+               ", title='" + title + '\'' +
+               ", preview='" + preview + '\'' +
+               ", content='" + content + '\'' +
+               ", author='" + author + '\'' +
+               ", date=" + date +
+               ", richContentType=" + richContentType +
+               ", documents=" + documents +
+               ", images=" + images +
+               ", highlight=" + highlight +
+               ", tag='" + tag + '\'' +
+               ", tagList=" + tagList +
+               ", tags='" + tags + '\'' +
+               ", active=" + active +
+               ", language='" + language + '\'' +
+               '}';
+   }
 }

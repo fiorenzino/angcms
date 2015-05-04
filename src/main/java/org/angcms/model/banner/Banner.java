@@ -1,16 +1,18 @@
 package org.angcms.model.banner;
 
 import org.angcms.model.base.attachment.Image;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "Banner")
+@Table(name = Banner.TABLE_NAME)
 public class Banner implements Serializable
 {
 
    private static final long serialVersionUID = 1L;
+   public static final String TABLE_NAME = "Banner";
 
    private Long id;
    private String name;
@@ -94,6 +96,7 @@ public class Banner implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public Image getNewImage()
    {
       if (newImage == null)
@@ -148,4 +151,19 @@ public class Banner implements Serializable
       this.online = online;
    }
 
+   @Override public String toString()
+   {
+      return "Banner{" +
+               "id=" + id +
+               ", name='" + name + '\'' +
+               ", language='" + language + '\'' +
+               ", bannerTypology=" + bannerTypology +
+               ", active=" + active +
+               ", url='" + url + '\'' +
+               ", internal=" + internal +
+               ", description='" + description + '\'' +
+               ", image=" + image +
+               ", online=" + online +
+               '}';
+   }
 }

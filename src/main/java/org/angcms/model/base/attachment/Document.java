@@ -6,8 +6,11 @@
  */
 package org.angcms.model.base.attachment;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 
 @Entity
 @Table(name = Document.TABLE_NAME)
@@ -69,6 +72,7 @@ public class Document implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public byte[] getData()
    {
       return data;
@@ -100,10 +104,22 @@ public class Document implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public boolean isRemote()
    {
       return filename != null
                && (filename.toLowerCase().startsWith("http://") || filename.toLowerCase().startsWith("https://"));
    }
 
+   @Override public String toString()
+   {
+      return "Document{" +
+               "id=" + id +
+               ", active=" + active +
+               ", name='" + name + '\'' +
+               ", description='" + description + '\'' +
+               ", filename='" + filename + '\'' +
+               ", type='" + type + '\'' +
+               '}';
+   }
 }

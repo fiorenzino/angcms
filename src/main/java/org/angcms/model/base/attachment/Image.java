@@ -7,9 +7,11 @@
 package org.angcms.model.base.attachment;
 
 import org.angcms.model.base.enums.ResourceType;
+import org.codehaus.jackson.annotate.JsonIgnore;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.Arrays;
 
 @Entity
 @Table(name = Image.TABLE_NAME)
@@ -17,7 +19,6 @@ public class Image implements Serializable
 {
 
    private static final long serialVersionUID = 1L;
-
    public static final String TABLE_NAME = "Image";
 
    private Long id;
@@ -72,6 +73,7 @@ public class Image implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public byte[] getData()
    {
       return data;
@@ -93,6 +95,7 @@ public class Image implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public String getFilePath()
    {
       if (filePath == null)
@@ -118,10 +121,23 @@ public class Image implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public boolean isRemote()
    {
       return filename != null
                && (filename.toLowerCase().startsWith("http://") || filename.toLowerCase().startsWith("https://"));
    }
 
+   @Override public String toString()
+   {
+      return "Image{" +
+               "id=" + id +
+               ", active=" + active +
+               ", name='" + name + '\'' +
+               ", description='" + description + '\'' +
+               ", filename='" + filename + '\'' +
+               ", filePath='" + filePath + '\'' +
+               ", type='" + type + '\'' +
+               '}';
+   }
 }

@@ -28,6 +28,10 @@ public class CategoryRepositoryRs extends RsRepositoryService<Category>
 
    private static final long serialVersionUID = 1L;
 
+   public CategoryRepositoryRs()
+   {
+   }
+
    @Inject
    public CategoryRepositoryRs(CategoryRepository categoryRepository)
    {

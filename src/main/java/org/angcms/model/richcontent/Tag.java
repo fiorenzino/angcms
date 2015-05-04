@@ -122,4 +122,16 @@ public class Tag implements Serializable
       }
    }
 
+   @Override public String toString()
+   {
+      return "Tag{" +
+               "id=" + id +
+               ", richContent=" + richContent +
+               ", richContentId='" + richContentId + '\'' +
+               ", tagName='" + tagName + '\'' +
+               ", day=" + day +
+               ", month=" + month +
+               ", year=" + year +
+               '}';
+   }
 }

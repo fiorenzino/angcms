@@ -1,30 +1,21 @@
 package org.giavacms.api.service;
 
-import java.io.Serializable;
-import java.lang.reflect.ParameterizedType;
-import java.net.URLDecoder;
-import java.util.List;
+import org.giavacms.api.repository.Repository;
+import org.giavacms.api.repository.Search;
+import org.giavacms.api.util.RepositoryUtils;
+import org.jboss.logging.Logger;
 
 import javax.persistence.NoResultException;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.DefaultValue;
-import javax.ws.rs.GET;
-import javax.ws.rs.OPTIONS;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.QueryParam;
+import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.UriInfo;
-
-import org.giavacms.api.repository.Repository;
-import org.giavacms.api.repository.Search;
-import org.giavacms.api.util.RepositoryUtils;
-import org.jboss.logging.Logger;
+import java.io.Serializable;
+import java.lang.reflect.ParameterizedType;
+import java.net.URLDecoder;
+import java.util.List;
 
 public abstract class RsRepositoryService<T> implements Serializable
 {
@@ -403,6 +394,13 @@ public abstract class RsRepositoryService<T> implements Serializable
    {
       logger.info("@OPTIONS ALL");
       return Response.ok().build();
+   }
+
+   @GET
+   @Path("/up")
+   public Response up()
+   {
+      return Response.status(Response.Status.OK).entity(true).build();
    }
 
 }
