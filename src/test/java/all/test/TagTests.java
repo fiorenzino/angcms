@@ -142,8 +142,11 @@ public class TagTests
    {
       try
       {
+         //, @QueryParam("pageSize") String pageSize
          WebTarget target = CrudTests.getTarget(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
-                  + AppConstants.TAG_PATH + "/groups").queryParam("richContentType", richContentTypeName);
+                  + AppConstants.TAG_PATH + "/groups").queryParam("richContentType", richContentTypeName)
+                  .queryParam("pageSize", 0)
+                  .queryParam("pageSize", 10);
          Invocation.Builder invocationBuilder =
                   target.request(MediaType.APPLICATION_JSON);
          GenericType<List<Group>> genericType = new GenericType<List<Group>>()
