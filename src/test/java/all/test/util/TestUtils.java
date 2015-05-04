@@ -4,6 +4,7 @@ import org.angcms.model.banner.Banner;
 import org.angcms.model.banner.BannerTypology;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.RichContent;
+import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
 
 import java.util.Date;
@@ -57,7 +58,14 @@ public class TestUtils
       image.setActive(true);
       image.setDescription("post di prova");
 
+      Tag tag = new Tag();
+      tag.setTagName("paura");
+      tag.setDay(4);
+      tag.setMonth(5);
+      tag.setYear(2015);
+
       RichContent richContent = new RichContent();
+      richContent.getTags()
       richContent.setRichContentType(richContentType);
       richContent.setActive(true);
       richContent.setAuthor("fiorenzo");
