@@ -26,8 +26,11 @@ import org.angcms.model.richcontent.RichContent;
 import org.angcms.repository.base.ImageRepository;
 import org.angcms.repository.richcontent.RichContentRepository;
 import org.angcms.repository.richcontent.TagRepository;
+import org.angcms.util.ResourceUtils;
+import org.apache.commons.io.IOUtils;
 import org.giavacms.api.management.AppConstants;
 import org.giavacms.api.service.RsRepositoryService;
+import org.giavacms.core.util.FileUtils;
 import org.giavacms.core.util.HttpUtils;
 import org.jboss.resteasy.plugins.providers.multipart.InputPart;
 import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
@@ -130,14 +133,18 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
             fileName = HttpUtils.parseFileName(headers);
             // Handle the body of that part with an InputStream
             InputStream istream = inputPart.getBody(InputStream.class, null);
-            byte[] byteArray = HttpUtils.getBytes(istream);
+            byte[] byteArray = IOUtils.toByteArray(istream);
             Image image = new Image();
             image.setData(byteArray);
+            image.setFilename(FileUtils.getLastPartOf(fileName));
+            image.setType(ResourceUtils.getType(fileName));
             image = imageRepository.persist(image);
+            if (image.getId() == null)
             {
                return Response.status(Status.INTERNAL_SERVER_ERROR)
                         .entity("Error writing file: " + fileName).build();
             }
+            ((RichContentRepository) getRepository()).addImage(richContentId, image.getId());
          }
          String output = "File saved to server location : " + fileName;
          return Response.status(200).entity(output).build();

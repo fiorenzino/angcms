@@ -126,26 +126,4 @@ public class HttpUtils
       return null;
    }
 
-   public static byte[] getBytes(InputStream uploadedInputStream)
-   {
-      try
-      {
-         ByteArrayOutputStream outpuStream = new ByteArrayOutputStream();
-         int read = 0;
-         byte[] bytes = new byte[1024];
-         outpuStream = new ByteArrayOutputStream();
-         while ((read = uploadedInputStream.read(bytes)) != -1)
-         {
-            outpuStream.write(bytes, 0, read);
-         }
-         byte[] byteArray = outpuStream.toByteArray();
-         outpuStream.close();
-         return byteArray;
-      }
-      catch (IOException e)
-      {
-         logger.error(e.getMessage(), e);
-         return null;
-      }
-   }
 }

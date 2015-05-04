@@ -334,4 +334,9 @@ public class RichContentRepository extends BaseRepository<RichContent>
                .setParameter("active", false).setParameter("id", key).executeUpdate();
    }
 
+   public void addImage(String richContentId, Long id)
+   {
+      // getEm().createNativeQuery("insert into " + RichContent.IMAGES_JOINTABLE_NAME + " set " + RichContent.TABLE_FK = " = :richContentId ")
+   }
+
 }
