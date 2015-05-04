@@ -1,9 +1,18 @@
 package all.test;
 
-import all.helper.junit.Order;
-import all.helper.junit.OrderedRunner;
-import all.test.common.CrudTests;
-import all.test.util.TestUtils;
+import java.io.File;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.core.GenericType;
+
 import org.angcms.management.AppConstants;
 import org.angcms.model.richcontent.RichContent;
 import org.angcms.model.richcontent.type.RichContentType;
@@ -11,11 +20,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.net.ssl.*;
-import javax.ws.rs.core.GenericType;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.List;
+import all.helper.junit.Order;
+import all.helper.junit.OrderedRunner;
+import all.test.common.CrudTests;
+import all.test.util.TestUtils;
 
 @RunWith(OrderedRunner.class)
 public class RichContentTests
@@ -158,15 +166,15 @@ public class RichContentTests
       try
       {
          CrudTests crudTests = new CrudTests();
-         RichContent bannerTypology = crudTests.get(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
+         RichContent richContentType = crudTests.get(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
                   + AppConstants.RICHCONTENT_PATH, id, RichContent.class);
-         Assert.assertNotNull(bannerTypology);
-         Assert.assertEquals(id, bannerTypology.getId().toString());
+         Assert.assertNotNull(richContentType);
+         Assert.assertEquals(id, richContentType.getId().toString());
 
          String newName = "Nuovo Nome";
-         bannerTypology.setTitle(newName);
+         richContentType.setTitle(newName);
          crudTests.update(id, TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
-                  + AppConstants.RICHCONTENT_PATH, bannerTypology);
+                  + AppConstants.RICHCONTENT_PATH, richContentType);
 
       }
       catch (Exception ex)
@@ -178,6 +186,25 @@ public class RichContentTests
 
    @Test
    @Order(order = 5)
+   public void addImage()
+   {
+      try
+      {
+         String url = TARGET_HOST + AppConstants.API_PATH + AppConstants.BASE_PATH
+                  + AppConstants.RICHCONTENT_PATH + "/" + id + "/image";
+         int status = CrudTests
+                  .executeMultiPartRequest(url, new File("src/main/webapp", "test.jpg"), "prova.jpg", null);
+         Assert.assertEquals(200, status);
+      }
+      catch (Exception ex)
+      {
+         System.err.println(ex);
+         Assert.fail(ex.getClass().getCanonicalName());
+      }
+   }
+
+   @Test
+   @Order(order = 7)
    public void delete()
    {
       try
@@ -197,7 +224,7 @@ public class RichContentTests
    }
 
    @Test
-   @Order(order = 6)
+   @Order(order = 8)
    public void notExist()
    {
       try

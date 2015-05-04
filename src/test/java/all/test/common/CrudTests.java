@@ -1,8 +1,8 @@
 package all.test.common;
 
-import org.jboss.logging.Logger;
-import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
-import org.junit.Assert;
+import java.io.File;
+import java.util.List;
+import java.util.Map;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.Entity;
@@ -12,8 +12,17 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
-import java.util.List;
-import java.util.Map;
+
+import org.apache.http.HttpResponse;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.mime.MultipartEntity;
+import org.apache.http.entity.mime.content.FileBody;
+import org.apache.http.entity.mime.content.StringBody;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.jboss.logging.Logger;
+import org.jboss.resteasy.client.jaxrs.ResteasyClientBuilder;
+import org.junit.Assert;
 
 public class CrudTests
 {
@@ -262,6 +271,39 @@ public class CrudTests
       {
          logger.error(e.getMessage());
          Assert.fail(e.getClass().getCanonicalName());
+      }
+   }
+
+   public static int executeMultiPartRequest(String urlString, File file, String fileName, String fileDescription)
+            throws Exception
+   {
+      HttpClient client = new DefaultHttpClient();
+      HttpPost postRequest = new HttpPost(urlString);
+      try
+      {
+         // Set various attributes
+         MultipartEntity multiPartEntity = new MultipartEntity();
+         multiPartEntity.addPart("fileDescription", new StringBody(fileDescription != null ? fileDescription : ""));
+         multiPartEntity.addPart("fileName", new StringBody(fileName != null ? fileName : file.getName()));
+
+         FileBody fileBody = new FileBody(file, "application/octect-stream");
+         // Prepare payload
+         multiPartEntity.addPart("attachment", fileBody);
+
+         // Set to request body
+         postRequest.setEntity(multiPartEntity);
+
+         // Send request
+         HttpResponse response = client.execute(postRequest);
+
+         // Verify response if any
+         return response.getStatusLine().getStatusCode();
+      }
+      catch (Exception ex)
+      {
+         ex.printStackTrace();
+         return 0;
+
       }
    }
 
