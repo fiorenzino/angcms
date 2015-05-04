@@ -1,18 +1,5 @@
 package org.angcms.service.rs;
 
-import java.util.List;
-
-import javax.ejb.Stateless;
-import javax.inject.Inject;
-import javax.websocket.server.PathParam;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
-
 import org.angcms.model.richcontent.RichContent;
 import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
@@ -21,6 +8,14 @@ import org.giavacms.api.management.AppConstants;
 import org.giavacms.api.model.Group;
 import org.giavacms.api.model.Search;
 import org.giavacms.api.service.RsRepositoryService;
+
+import javax.ejb.Stateless;
+import javax.inject.Inject;
+import javax.ws.rs.*;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import javax.ws.rs.core.Response.Status;
+import java.util.List;
 
 @Path(AppConstants.BASE_PATH + AppConstants.TAG_PATH)
 @Stateless
@@ -42,8 +37,9 @@ public class TagRepositoryRs extends RsRepositoryService<Tag>
    }
 
    @GET
-   @Path("/groups/{richContentType}")
-   public Response getRequestTags(@PathParam("richContentType") String richContentType)
+   @Path("/groups")
+   public Response getRequestTags(@QueryParam("richContentType") String richContentType,
+            @QueryParam("startRow") String startRow, @QueryParam("pageSize") String pageSize)
    {
       try
       {
@@ -51,7 +47,9 @@ public class TagRepositoryRs extends RsRepositoryService<Tag>
          st.setGrouping("tagName");
          st.getObj().setRichContent(new RichContent());
          st.getObj().getRichContent().setRichContentType(new RichContentType(richContentType));
-         List<Group<Tag>> list = ((TagRepository) getRepository()).getGroups(st, 0, 10);
+
+         List<Group<Tag>> list = ((TagRepository) getRepository())
+                  .getGroups(st, Integer.parseInt(startRow), Integer.parseInt(pageSize));
          if (list == null || list.size() == 0)
          {
             return Response.status(Status.NO_CONTENT).build();

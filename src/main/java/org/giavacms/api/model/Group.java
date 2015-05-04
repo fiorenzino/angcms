@@ -3,7 +3,6 @@ package org.giavacms.api.model;
 import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 
 import org.codehaus.jackson.annotate.JsonIgnore;
 
@@ -21,8 +20,6 @@ public class Group<T> implements Serializable
    private Long count;
    private Long max;
 
-   private String name;
-
    public Group()
    {
    }
@@ -39,8 +36,6 @@ public class Group<T> implements Serializable
       this.max = max;
    }
 
-   @JsonIgnore
-   @XmlTransient
    public T getObj()
    {
       return obj;
@@ -71,16 +66,7 @@ public class Group<T> implements Serializable
       this.max = max;
    }
 
-   public String getName()
-   {
-      return name;
-   }
-
-   public void setName(String name)
-   {
-      this.name = name;
-   }
-
+   @JsonIgnore
    public Double getRatio()
    {
       return count == null ? 0D : max == null ? 0D : max == 0 ? 0D : new Double(count) / new Double(max);
@@ -89,7 +75,7 @@ public class Group<T> implements Serializable
    @Override
    public String toString()
    {
-      return "Group [count=" + count + ", max=" + max + ", name=" + name + "]";
+      return "Group [obj=" + obj + ", count=" + count + ", max=" + max + "]";
    }
 
 }

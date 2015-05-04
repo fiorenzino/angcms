@@ -2,7 +2,9 @@ package all.test;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -151,12 +153,15 @@ public class TagTests
       try
       {
          WebTarget target = CrudTests.getTarget(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
-                  + AppConstants.TAG_PATH + "/groups/" + richContentTypeName);
+                  + AppConstants.TAG_PATH + "/groups").queryParam("richContentType", richContentTypeName)
+                  .queryParam("startRow", 0).queryParam("pageSize", Integer.MAX_VALUE);
          Invocation.Builder invocationBuilder =
                   target.request(MediaType.APPLICATION_JSON);
+         GenericType<List<Group>> genericType = new GenericType<List<Group>>()
+         {
+         };
          Response response = invocationBuilder.get();
-         Object result = response.readEntity(
-                  Group.class);
+         List<Group> result = response.readEntity(genericType);
          System.out.println(result);
       }
       catch (Exception ex)
@@ -166,33 +171,4 @@ public class TagTests
       }
    }
 
-   @Test
-   @Order(order = 4)
-   public void groups()
-   {
-      try
-      {
-         CrudTests crudTests = new CrudTests();
-         GenericType<List<Group<Tag>>> genericType = new GenericType<List<Group<Tag>>>()
-         {
-         };
-         List<Group<Tag>> tagGroupsList = crudTests.list(TARGET_HOST,
-                  AppConstants.API_PATH + AppConstants.BASE_PATH + AppConstants.TAG_PATH + "/groups",
-                  null, genericType);
-         if (tagGroupsList == null)
-         {
-            Assert.fail("empty groups");
-            return;
-         }
-         for (Group<Tag> gt : tagGroupsList)
-         {
-            System.out.println(gt);
-         }
-      }
-      catch (Exception ex)
-      {
-         System.err.println(ex);
-         Assert.fail(ex.getClass().getCanonicalName());
-      }
-   }
 }
