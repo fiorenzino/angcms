@@ -3,6 +3,10 @@ package all.test.util;
 import org.angcms.model.banner.Banner;
 import org.angcms.model.banner.BannerTypology;
 import org.angcms.model.base.attachment.Image;
+import org.angcms.model.richcontent.RichContent;
+import org.angcms.model.richcontent.type.RichContentType;
+
+import java.util.Date;
 
 public class TestUtils
 {
@@ -33,6 +37,36 @@ public class TestUtils
       bannerTypology.setDescription("news");
       bannerTypology.setName("news");
       return bannerTypology;
+   }
+
+   public static RichContentType newRichContentType()
+   {
+      RichContentType richContentType = new RichContentType();
+      richContentType.setName("blog");
+      richContentType.setActive(true);
+      return richContentType;
+   }
+
+   public static RichContent newRichContent(String richContentTypeId)
+   {
+      RichContentType richContentType = newRichContentType();
+      richContentType.setId(Long.valueOf(richContentTypeId));
+
+      Image image = new Image();
+      image.setName("post.jpg");
+      image.setActive(true);
+      image.setDescription("post di prova");
+
+      RichContent richContent = new RichContent();
+      richContent.setRichContentType(richContentType);
+      richContent.setActive(true);
+      richContent.setAuthor("fiorenzo");
+      richContent.setDate(new Date());
+      richContent.setContent("<h1>primo post della stagione</h1>");
+      richContent.setTitle("primo post");
+      richContent.setPreview("primo post della stagione");
+      richContent.addImage(image);
+      return richContent;
    }
 
 }
