@@ -1,11 +1,16 @@
 package org.angcms.model.richcontent;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
+
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import java.io.Serializable;
 import java.net.URLEncoder;
 
 @Entity
 @Table(name = Tag.TABLE_NAME)
+@XmlRootElement
 public class Tag implements Serializable
 {
 
@@ -108,6 +113,7 @@ public class Tag implements Serializable
       this.year = year;
    }
 
+   @JsonIgnore
    @Transient
    public String getTagNameEscaped()
    {
@@ -122,7 +128,8 @@ public class Tag implements Serializable
       }
    }
 
-   @Override public String toString()
+   @Override
+   public String toString()
    {
       return "Tag{" +
                "id=" + id +

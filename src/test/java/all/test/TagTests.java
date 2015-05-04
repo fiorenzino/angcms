@@ -2,9 +2,7 @@ package all.test;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -113,12 +111,14 @@ public class TagTests
       create(UNO);
    }
 
+   @Test
    @Order(order = 2)
    public void create2()
    {
       create(UNO + RichContent.TAG_SEPARATOR + DUE);
    }
 
+   @Test
    @Order(order = 3)
    public void create3()
    {
@@ -157,12 +157,37 @@ public class TagTests
                   .queryParam("startRow", 0).queryParam("pageSize", Integer.MAX_VALUE);
          Invocation.Builder invocationBuilder =
                   target.request(MediaType.APPLICATION_JSON);
-         GenericType<List<Group>> genericType = new GenericType<List<Group>>()
+         GenericType<List<Group<Tag>>> genericType = new GenericType<List<Group<Tag>>>()
          {
          };
          Response response = invocationBuilder.get();
-         List<Group> result = response.readEntity(genericType);
-         System.out.println(result);
+         List<Group<Tag>> result = response.readEntity(genericType);
+         Assert.assertEquals(3, result.size());
+         for (Group<Tag> gt : result)
+         {
+            if (gt.getObj().getTagName().equals(UNO))
+            {
+               Assert.assertEquals("" + 3L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else if (gt.getObj().getTagName().equals(DUE))
+            {
+               Assert.assertEquals("" + 2L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else if (gt.getObj().getTagName().equals(TRE))
+            {
+               Assert.assertEquals("" + 1L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else
+            {
+               Assert.fail("unexecpted tag name: " + gt.getObj().getTagName());
+            }
+         }
       }
       catch (Exception ex)
       {
