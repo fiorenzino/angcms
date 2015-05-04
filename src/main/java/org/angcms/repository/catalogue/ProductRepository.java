@@ -20,7 +20,7 @@ import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.catalogue.Product;
 import org.angcms.repository.BaseRepository;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 
 @Named
 @Stateless

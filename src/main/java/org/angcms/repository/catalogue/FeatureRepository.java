@@ -8,11 +8,12 @@ package org.angcms.repository.catalogue;
 
 import org.angcms.model.catalogue.Feature;
 import org.angcms.repository.BaseRepository;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Named;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;

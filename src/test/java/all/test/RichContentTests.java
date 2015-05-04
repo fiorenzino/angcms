@@ -78,6 +78,7 @@ public class RichContentTests
                   + AppConstants.RICHCONTENT_TYPE_PATH, richContentType);
 
          richContentTypeId = richContentType.getId().toString();
+         Assert.assertNotNull(richContentTypeId);
       }
       catch (Exception ex)
       {
@@ -98,6 +99,7 @@ public class RichContentTests
                   + AppConstants.RICHCONTENT_PATH, RichContent);
          Assert.assertNotNull(RichContent.getId());
          id = RichContent.getId().toString();
+         Assert.assertNotNull(id);
       }
       catch (Exception ex)
       {

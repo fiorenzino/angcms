@@ -19,7 +19,7 @@ import org.angcms.model.richcontent.type.RichContentType;
 import org.angcms.repository.BaseRepository;
 import org.angcms.util.StringUtils;
 import org.angcms.util.TimeUtils;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 import org.giavacms.api.util.IdUtils;
 import org.giavacms.core.util.DateUtils;
 
@@ -176,7 +176,7 @@ public class RichContentRepository extends BaseRepository<RichContent>
 
    @Override
    protected void applyRestrictions(Search<RichContent> search, String alias, String separator, StringBuffer sb,
-            Map<String, Object> params)
+            Map<String, Object> params) throws Exception
    {
 
       // ACTIVE TYPE
@@ -184,13 +184,6 @@ public class RichContentRepository extends BaseRepository<RichContent>
       {
          sb.append(separator).append(alias).append(".richContentType.active = :typeActive ");
          params.put("typeActive", true);
-         separator = " and ";
-      }
-      // ACTIVE
-      if (true)
-      {
-         sb.append(separator).append(alias).append(".active = :active ");
-         params.put("active", true);
          separator = " and ";
       }
 
@@ -330,6 +323,15 @@ public class RichContentRepository extends BaseRepository<RichContent>
          separator = " and ";
       }
 
+      super.applyRestrictions(search, alias, separator, sb, params);
+
+   }
+
+   @Override
+   public void delete(Object key) throws Exception
+   {
+      getEm().createNativeQuery("update " + RichContent.TABLE_NAME + " set active = :active where id = :id")
+               .setParameter("active", false).setParameter("id", key).executeUpdate();
    }
 
 }

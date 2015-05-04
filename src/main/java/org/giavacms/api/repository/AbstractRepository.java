@@ -1,10 +1,13 @@
 package org.giavacms.api.repository;
 
+import org.giavacms.api.model.Group;
+import org.giavacms.api.model.Search;
 import org.giavacms.api.util.RepositoryUtils;
 import org.jboss.logging.Logger;
 
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
+
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.util.*;
@@ -207,6 +210,13 @@ public abstract class AbstractRepository<T> implements Serializable,
             String separator, StringBuffer sb, Map<String, Object> params)
             throws Exception
    {
+      String activeFieldName = RepositoryUtils.getActiveFieldName(getEntityType());
+      if (activeFieldName != null)
+      {
+         sb.append(separator).append(alias).append(".").append(activeFieldName).append(" = :activeFieldValue ");
+         params.put("activeFieldValue", true);
+         separator = " and ";
+      }
    }
 
    protected String getBaseList(Class<? extends Object> clazz, String alias,
@@ -272,8 +282,18 @@ public abstract class AbstractRepository<T> implements Serializable,
       boolean justCount = true;
       StringBuffer sb = new StringBuffer(getBaseList(getEntityType(), alias,
                justCount));
-      sb.append(" where " + alias + "." + idFieldName + " = :ID");
+      sb.append(" where " + alias + "." + idFieldName + " = :ID ");
+
+      String activeFieldName = RepositoryUtils.getActiveFieldName(getEntityType());
+      if (activeFieldName != null)
+      {
+         sb.append(" and " + alias + "." + activeFieldName + " = :ACTIVE ");
+      }
       Query q = getEm().createQuery(sb.toString()).setParameter("ID", key);
+      if (activeFieldName != null)
+      {
+         q.setParameter("ACTIVE", true);
+      }
       return ((Long) q.getSingleResult()).intValue() > 0;
    }
 

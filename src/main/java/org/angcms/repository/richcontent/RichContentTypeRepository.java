@@ -1,14 +1,15 @@
 package org.angcms.repository.richcontent;
 
 import org.angcms.model.richcontent.type.RichContentType;
+import org.giavacms.api.model.Search;
 import org.giavacms.api.repository.AbstractRepository;
-import org.giavacms.api.repository.Search;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import java.util.Map;
 
 @Named

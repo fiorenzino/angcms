@@ -1,4 +1,4 @@
-package org.angcms.repository.rs;
+package org.angcms.service.rs;
 
 import java.util.List;
 
@@ -18,8 +18,8 @@ import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
 import org.angcms.repository.richcontent.TagRepository;
 import org.giavacms.api.management.AppConstants;
-import org.giavacms.api.repository.Group;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Group;
+import org.giavacms.api.model.Search;
 import org.giavacms.api.service.RsRepositoryService;
 
 @Path(AppConstants.BASE_PATH + AppConstants.TAG_PATH)

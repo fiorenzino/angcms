@@ -4,9 +4,11 @@ import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.type.RichContentType;
 import org.codehaus.jackson.annotate.JsonIgnore;
+import org.giavacms.api.annotation.Active;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,7 +27,7 @@ public class RichContent implements Serializable
    public static final String DOCUMENT_FK = "documents_id";
    public static final String IMAGES_JOINTABLE_NAME = "RichContent_Image";
    public static final String IMAGE_FK = "images_id";
-   private static final String TAG_SEPARATOR = ",";
+   public static final String TAG_SEPARATOR = ",";
 
    private String id;
    private String title;
@@ -218,6 +220,7 @@ public class RichContent implements Serializable
       this.title = title;
    }
 
+   @Active
    public boolean isActive()
    {
       return active;
@@ -264,7 +267,8 @@ public class RichContent implements Serializable
       return tagList;
    }
 
-   @Override public String toString()
+   @Override
+   public String toString()
    {
       return "RichContent{" +
                "id='" + id + '\'' +

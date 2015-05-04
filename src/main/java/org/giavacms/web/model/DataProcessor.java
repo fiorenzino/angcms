@@ -1,6 +1,6 @@
 package org.giavacms.web.model;
 
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 
 import java.util.List;
 

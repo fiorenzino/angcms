@@ -2,11 +2,12 @@ package org.angcms.repository.banner;
 
 import org.angcms.model.banner.BannerTypology;
 import org.angcms.repository.BaseRepository;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.inject.Named;
+
 import java.util.Map;
 
 @Named

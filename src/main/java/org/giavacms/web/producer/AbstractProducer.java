@@ -8,8 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.enterprise.event.Observes;
 import javax.faces.model.SelectItem;
 
+import org.giavacms.api.model.Search;
 import org.giavacms.api.repository.Repository;
-import org.giavacms.api.repository.Search;
 import org.giavacms.web.event.ResetEvent;
 import org.giavacms.web.util.JSFUtils;
 import org.jboss.logging.Logger;
