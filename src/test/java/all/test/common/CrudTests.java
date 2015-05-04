@@ -449,19 +449,20 @@ public class CrudTests
       }
    }
 
-   public void update(String targetHost, String targetPath, Object entity)
+   public void update(String uuid, String targetHost, String targetPath, Object entity)
    {
       this.targetHost = targetHost;
       this.targetPath = targetPath;
-      update(entity, null, null, null);
+      update(uuid, entity, null, null, null);
    }
 
-   public void update(Object entity, Map<String, String> queryParams, Map<String, String> pathParams,
+   public void update(String uuid, Object entity, Map<String, String> queryParams, Map<String, String> pathParams,
             Map<String, String> headerParams)
    {
       try
       {
-         WebTarget target = getTarget();
+         WebTarget target = getTarget().path("/{id}")
+                  .resolveTemplate("id", uuid);
          if (pathParams != null && !pathParams.isEmpty())
          {
             for (String key : pathParams.keySet())

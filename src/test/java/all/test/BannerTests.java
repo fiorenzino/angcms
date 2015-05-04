@@ -143,7 +143,7 @@ public class BannerTests
 
          String newName = "Nuovo Nome";
          banner.setName(newName);
-         crudTests.update(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
+         crudTests.update(id, TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
                   + AppConstants.BANNER_PATH, banner);
 
       }

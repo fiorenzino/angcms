@@ -141,7 +141,7 @@ public class BannerTypologyTests
 
          String newName = "Nuovo Nome";
          bannerTypology.setName(newName);
-         crudTests.update(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
+         crudTests.update(id, TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
                   + AppConstants.BANNERTYPOLOGY_PATH, bannerTypology);
 
       }
