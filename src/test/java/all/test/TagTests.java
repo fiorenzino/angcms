@@ -1,26 +1,34 @@
 package all.test;
 
-import all.helper.junit.Order;
-import all.helper.junit.OrderedRunner;
-import all.test.common.CrudTests;
-import all.test.util.TestUtils;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.List;
+
+import javax.net.ssl.HostnameVerifier;
+import javax.net.ssl.HttpsURLConnection;
+import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLSession;
+import javax.net.ssl.TrustManager;
+import javax.net.ssl.X509TrustManager;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+
 import org.angcms.management.AppConstants;
 import org.angcms.model.richcontent.RichContent;
+import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
 import org.giavacms.api.model.Group;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import javax.net.ssl.*;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.List;
+import all.helper.junit.Order;
+import all.helper.junit.OrderedRunner;
+import all.test.common.CrudTests;
+import all.test.util.TestUtils;
 
 @RunWith(OrderedRunner.class)
 public class TagTests
@@ -103,12 +111,14 @@ public class TagTests
       create(UNO);
    }
 
+   @Test
    @Order(order = 2)
    public void create2()
    {
       create(UNO + RichContent.TAG_SEPARATOR + DUE);
    }
 
+   @Test
    @Order(order = 3)
    public void create3()
    {
@@ -142,19 +152,42 @@ public class TagTests
    {
       try
       {
-         //, @QueryParam("pageSize") String pageSize
          WebTarget target = CrudTests.getTarget(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
                   + AppConstants.TAG_PATH + "/groups").queryParam("richContentType", richContentTypeName)
-                  .queryParam("pageSize", 0)
-                  .queryParam("pageSize", 10);
+                  .queryParam("startRow", 0).queryParam("pageSize", Integer.MAX_VALUE);
          Invocation.Builder invocationBuilder =
                   target.request(MediaType.APPLICATION_JSON);
-         GenericType<List<Group>> genericType = new GenericType<List<Group>>()
+         GenericType<List<Group<Tag>>> genericType = new GenericType<List<Group<Tag>>>()
          {
          };
          Response response = invocationBuilder.get();
-         List<Group> result = response.readEntity(genericType);
-         System.out.println(result);
+         List<Group<Tag>> result = response.readEntity(genericType);
+         Assert.assertEquals(3, result.size());
+         for (Group<Tag> gt : result)
+         {
+            if (gt.getObj().getTagName().equals(UNO))
+            {
+               Assert.assertEquals("" + 3L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else if (gt.getObj().getTagName().equals(DUE))
+            {
+               Assert.assertEquals("" + 2L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else if (gt.getObj().getTagName().equals(TRE))
+            {
+               Assert.assertEquals("" + 1L, "" + gt.getCount());
+               Assert.assertEquals("" + 3L, "" + gt.getMax());
+               System.out.println(gt.getObj().getTagName() + " = " + gt.getCount() + "/" + gt.getMax());
+            }
+            else
+            {
+               Assert.fail("unexecpted tag name: " + gt.getObj().getTagName());
+            }
+         }
       }
       catch (Exception ex)
       {
@@ -162,4 +195,5 @@ public class TagTests
          Assert.fail(ex.getClass().getCanonicalName());
       }
    }
+
 }

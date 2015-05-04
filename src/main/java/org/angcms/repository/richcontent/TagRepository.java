@@ -235,4 +235,29 @@ public class TagRepository extends AbstractRepository<Tag>
       return true;
    }
 
+   @Override
+   protected Tag construct(List<String> fieldNames, List<Object> fieldValues)
+   {
+      Tag t = new Tag();
+      for (int i = 0; i < fieldNames.size(); i++)
+      {
+         if ("tagName".equals(fieldNames.get(i)))
+         {
+            t.setTagName((String) fieldValues.get(i));
+         }
+         else if ("day".equals(fieldNames.get(i)))
+         {
+            t.setDay((Integer) fieldValues.get(i));
+         }
+         else if ("month".equals(fieldNames.get(i)))
+         {
+            t.setMonth((Integer) fieldValues.get(i));
+         }
+         else if ("year".equals(fieldNames.get(i)))
+         {
+            t.setYear((Integer) fieldValues.get(i));
+         }
+      }
+      return t;
+   }
 }

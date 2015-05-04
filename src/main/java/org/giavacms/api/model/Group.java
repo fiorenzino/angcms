@@ -4,6 +4,8 @@ import java.io.Serializable;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 /**
  * Created by fiorenzo on 30/04/15.
  */
@@ -64,9 +66,16 @@ public class Group<T> implements Serializable
       this.max = max;
    }
 
+   @JsonIgnore
    public Double getRatio()
    {
       return count == null ? 0D : max == null ? 0D : max == 0 ? 0D : new Double(count) / new Double(max);
+   }
+
+   @Override
+   public String toString()
+   {
+      return "Group [obj=" + obj + ", count=" + count + ", max=" + max + "]";
    }
 
 }
