@@ -1,18 +1,9 @@
 package all.test;
 
-import java.io.File;
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-import java.util.List;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.core.GenericType;
-
+import all.helper.junit.Order;
+import all.helper.junit.OrderedRunner;
+import all.test.common.CrudTests;
+import all.test.util.TestUtils;
 import org.angcms.management.AppConstants;
 import org.angcms.model.richcontent.RichContent;
 import org.angcms.model.richcontent.type.RichContentType;
@@ -20,10 +11,12 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import all.helper.junit.Order;
-import all.helper.junit.OrderedRunner;
-import all.test.common.CrudTests;
-import all.test.util.TestUtils;
+import javax.net.ssl.*;
+import javax.ws.rs.core.GenericType;
+import java.io.File;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 @RunWith(OrderedRunner.class)
 public class RichContentTests
@@ -194,6 +187,26 @@ public class RichContentTests
                   + AppConstants.RICHCONTENT_PATH + "/" + id + "/image";
          int status = CrudTests
                   .executeMultiPartRequest(url, new File("src/test/resources", "test.jpg"), "prova.jpg", null);
+         Assert.assertEquals(200, status);
+      }
+      catch (Exception ex)
+      {
+         System.err.println(ex);
+         Assert.fail(ex.getClass().getCanonicalName());
+      }
+   }
+
+   @Test
+   @Order(order = 6)
+   public void addDocument()
+   {
+      try
+      {
+         String url = TARGET_HOST + AppConstants.API_PATH + AppConstants.BASE_PATH
+                  + AppConstants.RICHCONTENT_PATH + "/" + id + "/document";
+         int status = CrudTests
+                  .executeMultiPartRequest(url, new File("src/test/resources", "PromisesAngularJS.pdf"),
+                           "PromisesAngularJS.pdf", null);
          Assert.assertEquals(200, status);
       }
       catch (Exception ex)
