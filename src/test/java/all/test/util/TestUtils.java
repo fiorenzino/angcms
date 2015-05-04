@@ -74,6 +74,7 @@ public class TestUtils
       richContent.setTitle("primo post");
       richContent.setPreview("primo post della stagione");
       richContent.addImage(image);
+      richContent.setTags("primo" + RichContent.TAG_SEPARATOR + "post" + RichContent.TAG_SEPARATOR + "stagione");
       return richContent;
    }
 

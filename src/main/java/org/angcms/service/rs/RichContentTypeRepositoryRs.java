@@ -1,4 +1,4 @@
-package org.angcms.repository.rs;
+package org.angcms.service.rs;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,7 @@ import javax.ws.rs.core.Response.Status;
 import org.angcms.model.richcontent.type.RichContentType;
 import org.angcms.repository.richcontent.RichContentTypeRepository;
 import org.giavacms.api.management.AppConstants;
-import org.giavacms.api.repository.Search;
+import org.giavacms.api.model.Search;
 import org.giavacms.api.service.RsRepositoryService;
 
 @Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_TYPE_PATH)

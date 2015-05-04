@@ -1,25 +1,36 @@
-package org.angcms.repository.rs;
+package org.angcms.service.rs;
 
+import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.persistence.NoResultException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.MultivaluedMap;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.Response.Status;
 
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.RichContent;
+import org.angcms.repository.base.ImageRepository;
 import org.angcms.repository.richcontent.RichContentRepository;
+import org.angcms.repository.richcontent.TagRepository;
 import org.giavacms.api.management.AppConstants;
 import org.giavacms.api.service.RsRepositoryService;
+import org.giavacms.core.util.HttpUtils;
+import org.jboss.resteasy.plugins.providers.multipart.InputPart;
+import org.jboss.resteasy.plugins.providers.multipart.MultipartFormDataInput;
 
 @Path(AppConstants.BASE_PATH + AppConstants.RICHCONTENT_PATH)
 @Stateless
@@ -39,6 +50,11 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
    {
       super(repository);
    }
+
+   @Inject
+   TagRepository tagRepository;
+   @Inject
+   ImageRepository imageRepository;
 
    @GET
    @Path("/last")
@@ -96,6 +112,44 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
       }
    }
 
+   @POST
+   @Path("/{richContentId}/image")
+   @Consumes(MediaType.MULTIPART_FORM_DATA)
+   public Response addImage(@PathParam("richContentId") String richContentId, MultipartFormDataInput input)
+            throws Exception
+   {
+      try
+      {
+         String fileName = "";
+         Map<String, List<InputPart>> formParts = input.getFormDataMap();
+         List<InputPart> inPart = formParts.get("file");
+         for (InputPart inputPart : inPart)
+         {
+            // Retrieve headers, read the Content-Disposition header to obtain the original name of the file
+            MultivaluedMap<String, String> headers = inputPart.getHeaders();
+            fileName = HttpUtils.parseFileName(headers);
+            // Handle the body of that part with an InputStream
+            InputStream istream = inputPart.getBody(InputStream.class, null);
+            byte[] byteArray = HttpUtils.getBytes(istream);
+            Image image = new Image();
+            image.setData(byteArray);
+            image = imageRepository.persist(image);
+            {
+               return Response.status(Status.INTERNAL_SERVER_ERROR)
+                        .entity("Error writing file: " + fileName).build();
+            }
+         }
+         String output = "File saved to server location : " + fileName;
+         return Response.status(200).entity(output).build();
+      }
+      catch (Exception e)
+      {
+         logger.error(e.getMessage(), e);
+         return Response.status(Status.INTERNAL_SERVER_ERROR)
+                  .entity("Error creating image").build();
+      }
+   }
+
    @GET
    @Path("/{richContentId}/images")
    public Response getImages(@PathParam("richContentId") String richContentId)
@@ -145,4 +199,34 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
          return Response.status(Status.INTERNAL_SERVER_ERROR).build();
       }
    }
+
+   @Override
+   protected void postPersist(RichContent object) throws Exception
+   {
+      postPersistOrUpdate(object);
+   }
+
+   @Override
+   protected void postUpdate(RichContent object) throws Exception
+   {
+      postPersistOrUpdate(object);
+   }
+
+   private void postPersistOrUpdate(RichContent object)
+   {
+      tagRepository.set(object.getId(), object.getTagList(),
+               object.getDate());
+      if (object.isHighlight())
+      {
+         ((RichContentRepository) getRepository()).refreshHighlight(object.getId(), object.getRichContentType());
+      }
+   }
+
+   @Override
+   protected void postDelete(Object key) throws Exception
+   {
+      tagRepository.set(key.toString(), new ArrayList<String>(),
+               new Date());
+   }
+
 }

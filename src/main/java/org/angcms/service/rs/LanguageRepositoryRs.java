@@ -1,4 +1,4 @@
-package org.angcms.repository.rs;
+package org.angcms.service.rs;
 
 import org.angcms.model.lang.Language;
 import org.angcms.repository.language.LanguageRepository;

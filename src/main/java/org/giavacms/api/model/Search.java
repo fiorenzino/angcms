@@ -1,4 +1,4 @@
-package org.giavacms.api.repository;
+package org.giavacms.api.model;
 
 import java.io.Serializable;
 

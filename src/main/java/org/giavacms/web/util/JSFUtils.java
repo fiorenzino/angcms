@@ -1,7 +1,7 @@
 package org.giavacms.web.util;
 
+import org.giavacms.api.model.Search;
 import org.giavacms.api.repository.Repository;
-import org.giavacms.api.repository.Search;
 import org.jboss.logging.Logger;
 
 import javax.el.ELContext;
@@ -12,6 +12,7 @@ import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
+
 import java.io.File;
 import java.io.IOException;
 import java.lang.reflect.Field;

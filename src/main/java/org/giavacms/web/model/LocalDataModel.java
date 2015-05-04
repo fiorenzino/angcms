@@ -1,9 +1,10 @@
 package org.giavacms.web.model;
 
+import org.giavacms.api.model.Search;
 import org.giavacms.api.repository.Repository;
-import org.giavacms.api.repository.Search;
 
 import javax.naming.NamingException;
+
 import java.util.ArrayList;
 import java.util.List;
 

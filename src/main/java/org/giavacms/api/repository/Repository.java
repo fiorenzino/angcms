@@ -2,6 +2,8 @@ package org.giavacms.api.repository;
 
 import java.lang.Class;import java.lang.Exception;import java.lang.Object;import java.lang.String;import java.util.List;
 
+import org.giavacms.api.model.Search;
+
 /**
  * @param <T>
  */

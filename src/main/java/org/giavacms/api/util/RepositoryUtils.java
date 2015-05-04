@@ -7,19 +7,28 @@ import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.persistence.Id;
+
+import org.giavacms.api.annotation.Active;
+
 public class RepositoryUtils
 {
 
    private static final String LONG = "java.lang.Long";
 
-   public static String getIdFieldName(@SuppressWarnings("rawtypes") Class clazz) throws Exception
+   public static String getActiveFieldName(@SuppressWarnings("rawtypes") Class clazz) throws Exception
+   {
+      return findFieldOrMethodName(clazz, Active.class);
+   }
+
+   private static String findFieldOrMethodName(Class<?> clazz, @SuppressWarnings("rawtypes") Class annotationClass)
    {
       for (Field field : clazz.getDeclaredFields())
       {
          Annotation[] annotations = field.getDeclaredAnnotations();
          for (Annotation annotation : annotations)
          {
-            if (annotation.annotationType().equals(javax.persistence.Id.class))
+            if (annotation.annotationType().equals(annotationClass))
             {
                field.setAccessible(true);
                return field.getName();
@@ -31,14 +40,38 @@ public class RepositoryUtils
          Annotation[] annotations = method.getDeclaredAnnotations();
          for (Annotation annotation : annotations)
          {
-            if (annotation.annotationType().equals(javax.persistence.Id.class))
+            if (annotation.annotationType().equals(annotationClass))
             {
-               method.setAccessible(true);
-               int index = method.getName().indexOf("get") + 3;
+               int index = 0;
+               if (method.getName().startsWith("is"))
+               {
+                  index = method.getName().indexOf("is") + 2;
+               }
+               else
+               {
+                  index = method.getName().indexOf("get") + 3;
+               }
                return method.getName().substring(index, index + 1).toLowerCase()
                         + method.getName().substring(index + 1);
             }
          }
+      }
+
+      // cerco anche nella classe padre se ce n'è una
+      if (clazz.getGenericSuperclass() != null)
+      {
+         return findFieldOrMethodName(clazz.getSuperclass(), annotationClass);
+      }
+
+      return null;
+   }
+
+   public static String getIdFieldName(@SuppressWarnings("rawtypes") Class clazz) throws Exception
+   {
+      String idFieldName = findFieldOrMethodName(clazz, Id.class);
+      if (idFieldName != null)
+      {
+         return idFieldName;
       }
       throw new Exception("not found field/method with @Id org.giavacms.web.annotation");
    }
