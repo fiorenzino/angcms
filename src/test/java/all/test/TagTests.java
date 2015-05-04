@@ -1,32 +1,26 @@
 package all.test;
 
-import java.security.SecureRandom;
-import java.security.cert.X509Certificate;
-
-import javax.net.ssl.HostnameVerifier;
-import javax.net.ssl.HttpsURLConnection;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.SSLSession;
-import javax.net.ssl.TrustManager;
-import javax.net.ssl.X509TrustManager;
-import javax.ws.rs.client.Invocation;
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-
+import all.helper.junit.Order;
+import all.helper.junit.OrderedRunner;
+import all.test.common.CrudTests;
+import all.test.util.TestUtils;
 import org.angcms.management.AppConstants;
 import org.angcms.model.richcontent.RichContent;
-import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
 import org.giavacms.api.model.Group;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-import all.helper.junit.Order;
-import all.helper.junit.OrderedRunner;
-import all.test.common.CrudTests;
-import all.test.util.TestUtils;
+import javax.net.ssl.*;
+import javax.ws.rs.client.Invocation;
+import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
+import javax.ws.rs.core.MediaType;
+import javax.ws.rs.core.Response;
+import java.security.SecureRandom;
+import java.security.cert.X509Certificate;
+import java.util.List;
 
 @RunWith(OrderedRunner.class)
 public class TagTests
@@ -149,12 +143,14 @@ public class TagTests
       try
       {
          WebTarget target = CrudTests.getTarget(TARGET_HOST, AppConstants.API_PATH + AppConstants.BASE_PATH
-                  + AppConstants.TAG_PATH + "/groups/" + richContentTypeName);
+                  + AppConstants.TAG_PATH + "/groups").queryParam("richContentType", richContentTypeName);
          Invocation.Builder invocationBuilder =
                   target.request(MediaType.APPLICATION_JSON);
+         GenericType<List<Group>> genericType = new GenericType<List<Group>>()
+         {
+         };
          Response response = invocationBuilder.get();
-         Object result = response.readEntity(
-                  Group.class);
+         List<Group> result = response.readEntity(genericType);
          System.out.println(result);
       }
       catch (Exception ex)
