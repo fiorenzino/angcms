@@ -325,7 +325,6 @@ public class CrudTests
       this.targetPath = targetPath;
       return list(genericType, null, null, null);
    }
-
    public <T> List<T> wrappedList(GenericType<List<T>> genericType,
             Map<String, String> pathParams,
             Map<String, String> queryParams,

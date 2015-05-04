@@ -2,6 +2,7 @@ package all.test;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
+import java.util.List;
 
 import javax.net.ssl.HostnameVerifier;
 import javax.net.ssl.HttpsURLConnection;
@@ -11,6 +12,7 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
+import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -156,6 +158,36 @@ public class TagTests
          Object result = response.readEntity(
                   Group.class);
          System.out.println(result);
+      }
+      catch (Exception ex)
+      {
+         System.err.println(ex);
+         Assert.fail(ex.getClass().getCanonicalName());
+      }
+   }
+
+   @Test
+   @Order(order = 4)
+   public void groups()
+   {
+      try
+      {
+         CrudTests crudTests = new CrudTests();
+         GenericType<List<Group<Tag>>> genericType = new GenericType<List<Group<Tag>>>()
+         {
+         };
+         List<Group<Tag>> tagGroupsList = crudTests.list(TARGET_HOST,
+                  AppConstants.API_PATH + AppConstants.BASE_PATH + AppConstants.TAG_PATH + "/groups",
+                  null, genericType);
+         if (tagGroupsList == null)
+         {
+            Assert.fail("empty groups");
+            return;
+         }
+         for (Group<Tag> gt : tagGroupsList)
+         {
+            System.out.println(gt);
+         }
       }
       catch (Exception ex)
       {
