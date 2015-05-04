@@ -1,6 +1,13 @@
 # angcms
 angcms - the new angularjs cms
 
+TODO1:
+- nome tabelle minuscolo
+- split in moduli
+
+- gestione della lingua (testare via rest)
+
+
 
 - MANCA BACKEND
 
