@@ -193,7 +193,7 @@ public class RichContentTests
          String url = TARGET_HOST + AppConstants.API_PATH + AppConstants.BASE_PATH
                   + AppConstants.RICHCONTENT_PATH + "/" + id + "/image";
          int status = CrudTests
-                  .executeMultiPartRequest(url, new File("src/main/webapp", "test.jpg"), "prova.jpg", null);
+                  .executeMultiPartRequest(url, new File("src/test/resources", "test.jpg"), "prova.jpg", null);
          Assert.assertEquals(200, status);
       }
       catch (Exception ex)

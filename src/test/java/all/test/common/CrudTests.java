@@ -16,6 +16,8 @@ import javax.ws.rs.core.Response.Status;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.ContentType;
+import org.apache.http.entity.mime.FormBodyPart;
 import org.apache.http.entity.mime.MultipartEntity;
 import org.apache.http.entity.mime.content.FileBody;
 import org.apache.http.entity.mime.content.StringBody;
@@ -286,9 +288,10 @@ public class CrudTests
          multiPartEntity.addPart("fileDescription", new StringBody(fileDescription != null ? fileDescription : ""));
          multiPartEntity.addPart("fileName", new StringBody(fileName != null ? fileName : file.getName()));
 
-         FileBody fileBody = new FileBody(file, "application/octect-stream");
          // Prepare payload
-         multiPartEntity.addPart("attachment", fileBody);
+         FileBody fileBody = new FileBody(file, ContentType.APPLICATION_OCTET_STREAM, fileName);
+         FormBodyPart formBodyPart = new FormBodyPart("file", fileBody);
+         multiPartEntity.addPart(formBodyPart);
 
          // Set to request body
          postRequest.setEntity(multiPartEntity);

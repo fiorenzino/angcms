@@ -14,6 +14,7 @@ import org.jboss.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.imageio.stream.FileImageOutputStream;
 import javax.servlet.ServletContext;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -78,7 +79,7 @@ public class ResourceUtils
    public static List<String> getFilesName(String directory,
             List<String> extensions)
    {
-      File rootDir = new File(getRealPath() + directory);
+      File rootDir = new File(getRealPath(directory));
       IOFileFilter filesFilter = new SuffixFileFilter(extensions, IOCase.INSENSITIVE);
       IOFileFilter notDirectory = new NotFileFilter(
                DirectoryFileFilter.INSTANCE);
@@ -158,7 +159,7 @@ public class ResourceUtils
    {
       try
       {
-         String actualFileName = getUniqueName(getRealPath() + folder,
+         String actualFileName = getUniqueName(getRealPath(folder),
                   imageFileName);
          FileImageOutputStream imageOutput;
          imageOutput = new FileImageOutputStream(new File(actualFileName));
@@ -183,7 +184,7 @@ public class ResourceUtils
    {
       try
       {
-         String actualFileName = getUniqueName(getRealPath() + folder,
+         String actualFileName = getUniqueName(getRealPath(folder),
                   fileName);
          FileOutputStream fos = new FileOutputStream(
                   new File(actualFileName));
@@ -226,12 +227,20 @@ public class ResourceUtils
       return folder + File.separator + finalName;
    }
 
-   public static String getRealPath()
+   public static String getRealPath(String folderName)
    {
-      ServletContext servletContext = (ServletContext) FacesContext
-               .getCurrentInstance().getExternalContext().getContext();
-      String folder = servletContext.getRealPath("") + File.separator;
-      return folder;
+      // ServletContext servletContext = (ServletContext) FacesContext
+      // .getCurrentInstance().getExternalContext().getContext();
+      // String folder = servletContext.getRealPath("") + File.separator;
+      // return folder;
+      String root = new File(ResourceUtils.class.getClassLoader().getResource("angcms").getPath()).getParentFile()
+               .getParentFile().getParent();
+      File folder = new File(root, folderName);
+      if (!folder.exists())
+      {
+         folder.mkdir();
+      }
+      return folder.getAbsolutePath();
    }
 
    public static String getFileContent(String fileName)

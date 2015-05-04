@@ -65,7 +65,7 @@ public class TestUtils
       tag.setYear(2015);
 
       RichContent richContent = new RichContent();
-      richContent.getTags()
+      richContent.getTags();
       richContent.setRichContentType(richContentType);
       richContent.setActive(true);
       richContent.setAuthor("fiorenzo");
