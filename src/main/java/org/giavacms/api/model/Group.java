@@ -2,9 +2,12 @@ package org.giavacms.api.model;
 
 import java.io.Serializable;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 /**
  * Created by fiorenzo on 30/04/15.
  */
+@XmlRootElement
 public class Group<T> implements Serializable
 {
 
@@ -14,6 +17,10 @@ public class Group<T> implements Serializable
 
    private Long count;
    private Long max;
+
+   public Group()
+   {
+   }
 
    public Group(Long count, T obj)
    {
