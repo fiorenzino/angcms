@@ -9,22 +9,127 @@ public class LanguageMapping implements Serializable
 {
    private String pageId;
    private String type;
-   private String pageLangName;
+   private String langName;
 
+   private String pageId1;
+   private String type1;
    private String langName1;
-   private String langId1;
 
+   private String pageId2;
+   private String type2;
    private String langName2;
-   private String langId2;
 
+   private String pageId3;
+   private String type3;
    private String langName3;
-   private String langId3;
 
+   private String pageId4;
+   private String type4;
    private String langName4;
-   private String langId4;
 
+   private String pageId5;
+   private String type5;
    private String langName5;
-   private String langId5;
+
+   public LanguageMapping()
+   {
+   }
+
+   public LanguageMapping(String pageId, String type, String langName)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+   }
+
+   public LanguageMapping(String pageId, String type, String langName, String pageId1, String type1,
+            String langName1)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+      this.pageId1 = pageId1;
+      this.type1 = type1;
+      this.langName1 = langName1;
+   }
+
+   public LanguageMapping(String pageId, String type, String langName, String pageId1, String type1,
+            String langName1, String pageId2, String type2, String langName2)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+      this.pageId1 = pageId1;
+      this.type1 = type1;
+      this.langName1 = langName1;
+      this.pageId2 = pageId2;
+      this.type2 = type2;
+      this.langName2 = langName2;
+   }
+
+   public LanguageMapping(String pageId, String type, String langName, String pageId1, String type1,
+            String langName1, String pageId2, String type2, String langName2, String pageId3, String type3,
+            String langName3)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+      this.pageId1 = pageId1;
+      this.type1 = type1;
+      this.langName1 = langName1;
+      this.pageId2 = pageId2;
+      this.type2 = type2;
+      this.langName2 = langName2;
+      this.pageId3 = pageId3;
+      this.type3 = type3;
+      this.langName3 = langName3;
+   }
+
+   public LanguageMapping(String pageId, String type, String langName, String pageId1, String type1,
+            String langName1, String pageId2, String type2, String langName2, String pageId3, String type3,
+            String langName3, String pageId4, String type4, String langName4)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+      this.pageId1 = pageId1;
+      this.type1 = type1;
+      this.langName1 = langName1;
+      this.pageId2 = pageId2;
+      this.type2 = type2;
+      this.langName2 = langName2;
+      this.pageId3 = pageId3;
+      this.type3 = type3;
+      this.langName3 = langName3;
+      this.pageId4 = pageId4;
+      this.type4 = type4;
+      this.langName4 = langName4;
+   }
+
+   public LanguageMapping(String pageId, String type, String langName, String pageId1, String type1,
+            String langName1, String pageId2, String type2, String langName2, String pageId3, String type3,
+            String langName3, String pageId4, String type4, String langName4, String pageId5, String type5,
+            String langName5)
+   {
+      this.pageId = pageId;
+      this.type = type;
+      this.langName = langName;
+      this.pageId1 = pageId1;
+      this.type1 = type1;
+      this.langName1 = langName1;
+      this.pageId2 = pageId2;
+      this.type2 = type2;
+      this.langName2 = langName2;
+      this.pageId3 = pageId3;
+      this.type3 = type3;
+      this.langName3 = langName3;
+      this.pageId4 = pageId4;
+      this.type4 = type4;
+      this.langName4 = langName4;
+      this.pageId5 = pageId5;
+      this.type5 = type5;
+      this.langName5 = langName5;
+   }
 
    @Id
    public String getPageId()
@@ -47,14 +152,34 @@ public class LanguageMapping implements Serializable
       this.type = type;
    }
 
-   public String getPageLangName()
+   public String getLangName()
    {
-      return pageLangName;
+      return langName;
    }
 
-   public void setPageLangName(String pageLangName)
+   public void setLangName(String langName)
    {
-      this.pageLangName = pageLangName;
+      this.langName = langName;
+   }
+
+   public String getPageId1()
+   {
+      return pageId1;
+   }
+
+   public void setPageId1(String pageId1)
+   {
+      this.pageId1 = pageId1;
+   }
+
+   public String getType1()
+   {
+      return type1;
+   }
+
+   public void setType1(String type1)
+   {
+      this.type1 = type1;
    }
 
    public String getLangName1()
@@ -67,14 +192,24 @@ public class LanguageMapping implements Serializable
       this.langName1 = langName1;
    }
 
-   public String getLangId1()
+   public String getPageId2()
    {
-      return langId1;
+      return pageId2;
    }
 
-   public void setLangId1(String langId1)
+   public void setPageId2(String pageId2)
    {
-      this.langId1 = langId1;
+      this.pageId2 = pageId2;
+   }
+
+   public String getType2()
+   {
+      return type2;
+   }
+
+   public void setType2(String type2)
+   {
+      this.type2 = type2;
    }
 
    public String getLangName2()
@@ -87,14 +222,24 @@ public class LanguageMapping implements Serializable
       this.langName2 = langName2;
    }
 
-   public String getLangId2()
+   public String getPageId3()
    {
-      return langId2;
+      return pageId3;
    }
 
-   public void setLangId2(String langId2)
+   public void setPageId3(String pageId3)
    {
-      this.langId2 = langId2;
+      this.pageId3 = pageId3;
+   }
+
+   public String getType3()
+   {
+      return type3;
+   }
+
+   public void setType3(String type3)
+   {
+      this.type3 = type3;
    }
 
    public String getLangName3()
@@ -107,14 +252,24 @@ public class LanguageMapping implements Serializable
       this.langName3 = langName3;
    }
 
-   public String getLangId3()
+   public String getPageId4()
    {
-      return langId3;
+      return pageId4;
    }
 
-   public void setLangId3(String langId3)
+   public void setPageId4(String pageId4)
    {
-      this.langId3 = langId3;
+      this.pageId4 = pageId4;
+   }
+
+   public String getType4()
+   {
+      return type4;
+   }
+
+   public void setType4(String type4)
+   {
+      this.type4 = type4;
    }
 
    public String getLangName4()
@@ -127,14 +282,24 @@ public class LanguageMapping implements Serializable
       this.langName4 = langName4;
    }
 
-   public String getLangId4()
+   public String getPageId5()
    {
-      return langId4;
+      return pageId5;
    }
 
-   public void setLangId4(String langId4)
+   public void setPageId5(String pageId5)
    {
-      this.langId4 = langId4;
+      this.pageId5 = pageId5;
+   }
+
+   public String getType5()
+   {
+      return type5;
+   }
+
+   public void setType5(String type5)
+   {
+      this.type5 = type5;
    }
 
    public String getLangName5()
@@ -145,15 +310,5 @@ public class LanguageMapping implements Serializable
    public void setLangName5(String langName5)
    {
       this.langName5 = langName5;
-   }
-
-   public String getLangId5()
-   {
-      return langId5;
-   }
-
-   public void setLangId5(String langId5)
-   {
-      this.langId5 = langId5;
    }
 }

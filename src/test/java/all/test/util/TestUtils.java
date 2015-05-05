@@ -3,6 +3,8 @@ package all.test.util;
 import org.angcms.model.banner.Banner;
 import org.angcms.model.banner.BannerTypology;
 import org.angcms.model.base.attachment.Image;
+import org.angcms.model.lang.Language;
+import org.angcms.model.lang.LanguageMapping;
 import org.angcms.model.richcontent.RichContent;
 import org.angcms.model.richcontent.Tag;
 import org.angcms.model.richcontent.type.RichContentType;
@@ -30,6 +32,62 @@ public class TestUtils
       newBanner.setActive(true);
       newBanner.setOnline(true);
       return newBanner;
+   }
+
+   public static Language newLanguage(String lang)
+   {
+      Language language = new Language(lang);
+      return language;
+   }
+
+   public static LanguageMapping newLanguageMapping(String[] langs) throws Exception
+   {
+      LanguageMapping languageMapping;
+      switch (langs.length)
+      {
+      case 1:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1]);
+         break;
+      case 2:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1]
+         );
+         break;
+      case 3:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1],
+                  langs[2] + "_pageId", langs[2] + "_type", langs[2]
+         );
+         break;
+      case 4:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1],
+                  langs[2] + "_pageId", langs[2] + "_type", langs[2],
+                  langs[3] + "_pageId", langs[3] + "_type", langs[3]
+         );
+         break;
+      case 5:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1],
+                  langs[2] + "_pageId", langs[2] + "_type", langs[2],
+                  langs[3] + "_pageId", langs[3] + "_type", langs[3],
+                  langs[4] + "_pageId", langs[4] + "_type", langs[4]
+         );
+         break;
+      case 6:
+         languageMapping = new LanguageMapping(langs[0] + "_pageId", langs[0] + "_type", langs[1],
+                  langs[1] + "_pageId", langs[1] + "_type", langs[1],
+                  langs[2] + "_pageId", langs[2] + "_type", langs[2],
+                  langs[3] + "_pageId", langs[3] + "_type", langs[3],
+                  langs[4] + "_pageId", langs[4] + "_type", langs[4],
+                  langs[5] + "_pageId", langs[5] + "_type", langs[5]
+         );
+         break;
+      default:
+         throw new Exception("non ci siamo!");
+      }
+      return languageMapping;
    }
 
    public static BannerTypology newBannerTypology()

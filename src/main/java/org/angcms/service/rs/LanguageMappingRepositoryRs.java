@@ -34,4 +34,34 @@ public class LanguageMappingRepositoryRs extends RsRepositoryService<LanguageMap
       super(languageMappingRepository);
    }
 
+   @Override protected void postPersist(LanguageMapping languageMapping) throws Exception
+   {
+      //WE MUST CREATE THE MUTUALS
+      LanguageMapping languageMapping1;
+      LanguageMapping languageMapping2;
+      LanguageMapping languageMapping3;
+      LanguageMapping languageMapping4;
+      LanguageMapping languageMapping5;
+      if (!languageMapping.getPageId1().isEmpty())
+      {
+         languageMapping1 = new LanguageMapping();
+      }
+      if (!languageMapping.getPageId2().isEmpty())
+      {
+         languageMapping2 = new LanguageMapping();
+      }
+      if (!languageMapping.getPageId3().isEmpty())
+      {
+         languageMapping3 = new LanguageMapping();
+      }
+      if (!languageMapping.getPageId4().isEmpty())
+      {
+         languageMapping4 = new LanguageMapping();
+      }
+      if (!languageMapping.getPageId5().isEmpty())
+      {
+         languageMapping5 = new LanguageMapping();
+      }
+      //      super.postPersist(object);
+   }
 }

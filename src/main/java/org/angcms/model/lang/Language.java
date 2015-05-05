@@ -9,6 +9,15 @@ public class Language implements Serializable
 {
    private String name;
 
+   public Language()
+   {
+   }
+
+   public Language(String name)
+   {
+      this.name = name;
+   }
+
    @Id
    public String getName()
    {
