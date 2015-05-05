@@ -411,7 +411,7 @@ public abstract class AbstractRepository<T> implements Serializable,
     */
    protected T construct(List<String> fieldNames, List<Object> fieldValues)
    {
-      return null;
+      throw new RuntimeException("not implemented. override this.");
    }
 
 }
