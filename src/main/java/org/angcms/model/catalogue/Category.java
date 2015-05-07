@@ -65,6 +65,26 @@ public class Category implements Serializable
       this.id = id;
    }
 
+   public String getName()
+   {
+      return name;
+   }
+
+   public void setName(String name)
+   {
+      this.name = name;
+   }
+
+   public String getDescription()
+   {
+      return description;
+   }
+
+   public void setDescription(String description)
+   {
+      this.description = description;
+   }
+
    public String getLanguage()
    {
       return language;
@@ -73,18 +93,6 @@ public class Category implements Serializable
    public void setLanguage(String language)
    {
       this.language = language;
-   }
-
-   @Transient
-   public String getName()
-   {
-      return name;
-   }
-
-   @Deprecated
-   public void setName(String name)
-   {
-      this.name = name;
    }
 
    @JsonIgnore
@@ -105,14 +113,6 @@ public class Category implements Serializable
    public void addProduct(Product product)
    {
       getProducts().add(product);
-   }
-
-   @Override
-   public String toString()
-   {
-      return "Category [id=" + getId() + ", name=" + getName()
-               + ", description=" + getDescription() + ", active="
-               + isActive() + "]";
    }
 
    public int getOrderNum()
@@ -325,6 +325,8 @@ public class Category implements Serializable
       this.ref10 = ref10;
    }
 
+   @Transient
+   @JsonIgnore
    public String getProp(int index)
    {
       switch (index)
@@ -354,6 +356,8 @@ public class Category implements Serializable
       }
    }
 
+   @Transient
+   @JsonIgnore
    public String getRef(int index)
    {
       switch (index)
@@ -383,6 +387,8 @@ public class Category implements Serializable
       }
    }
 
+   @Transient
+   @JsonIgnore
    public int getPropIndex(String prop)
    {
       if (prop == null)
@@ -399,6 +405,8 @@ public class Category implements Serializable
       return -1;
    }
 
+   @Transient
+   @JsonIgnore
    public int getRefIndex(String ref)
    {
       if (ref == null)
@@ -494,6 +502,7 @@ public class Category implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public List<String> getProps()
    {
       List<String> props = new ArrayList<String>();
@@ -505,6 +514,7 @@ public class Category implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public List<String> getRefs()
    {
       List<String> refs = new ArrayList<String>();
@@ -525,13 +535,11 @@ public class Category implements Serializable
       this.active = active;
    }
 
-   public String getDescription()
+   @Override
+   public String toString()
    {
-      return description;
-   }
-
-   public void setDescription(String description)
-   {
-      this.description = description;
+      return "Category [id=" + getId() + ", name=" + getName()
+               + ", description=" + getDescription() + ", active="
+               + isActive() + "]";
    }
 }

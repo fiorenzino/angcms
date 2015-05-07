@@ -164,6 +164,7 @@ public class Product implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public int getImgSize()
    {
       return getImages().size();
@@ -319,6 +320,8 @@ public class Product implements Serializable
       this.val10 = val10;
    }
 
+   @Transient
+   @JsonIgnore
    public String getVal(int index)
    {
       switch (index)
@@ -387,6 +390,8 @@ public class Product implements Serializable
       }
    }
 
+   @Transient
+   @JsonIgnore
    public String getProp(String prop)
    {
       if (prop == null || prop.trim().length() == 0 || category == null)
@@ -405,6 +410,8 @@ public class Product implements Serializable
       setVal(category.getPropIndex(prop), val);
    }
 
+   @Transient
+   @JsonIgnore
    public String getRef(String ref)
    {
       if (ref == null || ref.trim().length() == 0 || category == null)
@@ -424,6 +431,7 @@ public class Product implements Serializable
    }
 
    @Transient
+   @JsonIgnore
    public Map<String, String[]> getVals()
    {
       return vals;
