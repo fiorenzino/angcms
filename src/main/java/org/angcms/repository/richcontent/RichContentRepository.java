@@ -1,16 +1,5 @@
 package org.angcms.repository.richcontent;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
-import javax.ejb.LocalBean;
-import javax.ejb.Stateless;
-import javax.inject.Named;
-import javax.persistence.NoResultException;
-
 import org.angcms.model.base.attachment.Document;
 import org.angcms.model.base.attachment.Image;
 import org.angcms.model.richcontent.RichContent;
@@ -22,6 +11,12 @@ import org.angcms.util.TimeUtils;
 import org.giavacms.api.model.Search;
 import org.giavacms.api.util.IdUtils;
 import org.giavacms.core.util.DateUtils;
+
+import javax.ejb.LocalBean;
+import javax.ejb.Stateless;
+import javax.inject.Named;
+import javax.persistence.NoResultException;
+import java.util.*;
 
 @Named
 @Stateless
@@ -40,31 +35,56 @@ public class RichContentRepository extends BaseRepository<RichContent>
    @SuppressWarnings("unchecked")
    public List<Image> getImages(String id)
    {
+      //SELECT I.id, I.active, I.description, I.filename, I.name, I.type FROM Image I left join RichContent_Image RI on (I.id = RI.images_id) left join RichContent RC on (RC.id=RI.RichContent_id)
+      //      where RC.id='1-agosto-ore-2130--le-marche-i-manicomi-i-matti-gli-amori' and I.active=true
+
       return getEm()
                .createNativeQuery(
-                        "select * from " + Image.TABLE_NAME + " where id in ( "
-                                 + "    select " + RichContent.IMAGE_FK + " from "
-                                 + RichContent.IMAGES_JOINTABLE_NAME
-                                 + " where " + RichContent.TABLE_FK + " = ( "
-                                 + "       select id from " + RichContent.TABLE_NAME
-                                 + "    ) "
-                                 + " ) ", Image.class)
+                        "SELECT I.id, I.active, I.description, I.filename, I.name, I.type FROM " + Image.TABLE_NAME
+                                 + " I left join " + RichContent.IMAGES_JOINTABLE_NAME
+                                 + " RI on (I.id = RI." + RichContent.IMAGE_FK + ") left join " + RichContent.TABLE_NAME
+                                 + " RC on (RC.id=RI." + RichContent.TABLE_FK + ") "
+                                 + " where RC.id = :ID and I.active = :ACTIVE",
+                        Image.class).setParameter("ID", id).setParameter("ACTIVE", true)
                .getResultList();
+      //      return getEm()
+      //               .createNativeQuery(
+      //                        "select * from " + Image.TABLE_NAME + " where id in ( "
+      //                                 + "    select " + RichContent.IMAGE_FK + " from "
+      //                                 + RichContent.IMAGES_JOINTABLE_NAME
+      //                                 + " where " + RichContent.TABLE_FK + " = ( "
+      //                                 + "       select id from " + RichContent.TABLE_NAME
+      //                                 + "    ) "
+      //                                 + " ) ", Image.class)
+      //               .getResultList();
    }
 
    @SuppressWarnings("unchecked")
    public List<Image> getDocuments(String id)
    {
+
+      //SELECT D.id, D.active, D.description, D.filename, D.name, D.type  FROM Document D left join RichContent_Document RD on (D.id=RD.documents_id) left join RichContent RC on (RC.id=RD.RichContent_id)
+      //where RC.id = '1-agosto-ore-2130--le-marche-i-manicomi-i-matti-gli-amori' and D.active = true
+
       return getEm()
                .createNativeQuery(
-                        "select * from " + Document.TABLE_NAME + " where id in ( "
-                                 + "    select " + RichContent.DOCUMENT_FK + " from "
-                                 + RichContent.DOCUMENTS_JOINTABLE_NAME
-                                 + " where " + RichContent.TABLE_FK + " = ( "
-                                 + "       select id from " + RichContent.TABLE_NAME
-                                 + "    ) "
-                                 + " ) ", Document.class)
+                        "SELECT D.id, D.active, D.description, D.filename, D.name, D.type  FROM " + Document.TABLE_NAME
+                                 + " D left join " + RichContent.DOCUMENTS_JOINTABLE_NAME + " RD on (D.id=RD."
+                                 + RichContent.DOCUMENT_FK
+                                 + ") left join " + RichContent.TABLE_NAME + " RC on (RC.id=RD.RichContent_id)"
+                                 + " where RC.id = :ID and D.active = :ACTIVE",
+                        Document.class).setParameter("ID", id).setParameter("ACTIVE", true)
                .getResultList();
+      //      return getEm()
+      //               .createNativeQuery(
+      //                        "select * from " + Document.TABLE_NAME + " where id in ( "
+      //                                 + "    select " + RichContent.DOCUMENT_FK + " from "
+      //                                 + RichContent.DOCUMENTS_JOINTABLE_NAME
+      //                                 + " where " + RichContent.TABLE_FK + " = ( "
+      //                                 + "       select id from " + RichContent.TABLE_NAME
+      //                                 + "    ) "
+      //                                 + " ) ", Document.class)
+      //               .getResultList();
    }
 
    @Override

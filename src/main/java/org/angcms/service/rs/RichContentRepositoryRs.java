@@ -138,6 +138,17 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
             image.setType(ResourceUtils.getType(fileName));
             fileName = ResourceUtils.createImage_(AppConstants.IMG_FOLDER, fileName, byteArray);
             image.setFilename(fileName);
+            if (input.getFormDataMap().containsKey("name"))
+            {
+               String name = input.getFormDataMap().get("name").get(0).getBodyAsString();
+               image.setName(name);
+            }
+            if (input.getFormDataMap().containsKey("description"))
+            {
+               String description = input.getFormDataMap().get("description").get(0).getBodyAsString();
+               image.setDescription(description);
+            }
+
             image.setData(byteArray);
             image = imageRepository.persist(image);
             if (image.getId() == null)
@@ -182,6 +193,16 @@ public class RichContentRepositoryRs extends RsRepositoryService<RichContent>
             doc.setType(MimeUtils.getContentType(FileUtils.getLastPartOf(fileName)));
             String filename = ResourceUtils.createFile_(AppConstants.DOC_FOLDER, fileName, byteArray);
             doc.setFilename(filename);
+            if (input.getFormDataMap().containsKey("name"))
+            {
+               String name = input.getFormDataMap().get("name").get(0).getBodyAsString();
+               doc.setName("");
+            }
+            if (input.getFormDataMap().containsKey("description"))
+            {
+               String description = input.getFormDataMap().get("description").get(0).getBodyAsString();
+               doc.setDescription("");
+            }
             doc = documentRepository.persist(doc);
 
             if (doc.getId() == null)
